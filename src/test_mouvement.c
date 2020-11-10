@@ -43,4 +43,13 @@ void test_mouvement()
 		}
 	}
 	SavePGM_ui8matrix(I0, 0, IMG_LENGTH-1, 0, IMG_HEIGHT-1, "diff.pgm");
+
+	free_ui8matrix(I0, 0, IMG_LENGTH-1, 0, IMG_HEIGHT-1);
+	free_ui8matrix(I1, 0, IMG_LENGTH-1, 0, IMG_HEIGHT-1);
+	free_ui8matrix(M0, 0, IMG_LENGTH-1, 0, IMG_HEIGHT-1);
+	free_ui8matrix(M1, 0, IMG_LENGTH-1, 0, IMG_HEIGHT-1);
+	free_ui8matrix(O1, 0, IMG_LENGTH-1, 0, IMG_HEIGHT-1);
+	free_ui8matrix(V0, 0, IMG_LENGTH-1, 0, IMG_HEIGHT-1);
+	free_ui8matrix(V1, 0, IMG_LENGTH-1, 0, IMG_HEIGHT-1);
+	free_ui8matrix(E1, 0, IMG_LENGTH-1, 0, IMG_HEIGHT-1);
 }

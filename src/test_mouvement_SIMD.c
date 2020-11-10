@@ -105,4 +105,13 @@ void test_mouvement_SIMD()
 	SigmaDelta_4step_SIMD(O1, V1, E1, IMG_LENGTH, IMG_HEIGHT);
 
 	SavePGM_vui8matrix(E1, 0, IMG_LENGTH-1, 0, IMG_HEIGHT-1, outfile);
+
+  free_vui8matrix(I0, 0, IMG_LENGTH-1, 0, IMG_HEIGHT-1);
+  free_vui8matrix(I1, 0, IMG_LENGTH-1, 0, IMG_HEIGHT-1);
+  free_vui8matrix(M0, 0, IMG_LENGTH-1, 0, IMG_HEIGHT-1);
+  free_vui8matrix(M1, 0, IMG_LENGTH-1, 0, IMG_HEIGHT-1);
+  free_vui8matrix(O1, 0, IMG_LENGTH-1, 0, IMG_HEIGHT-1);
+  free_vui8matrix(V0, 0, IMG_LENGTH-1, 0, IMG_HEIGHT-1);
+  free_vui8matrix(V1, 0, IMG_LENGTH-1, 0, IMG_HEIGHT-1);
+  free_vui8matrix(E1, 0, IMG_LENGTH-1, 0, IMG_HEIGHT-1);
 }

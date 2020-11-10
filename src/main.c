@@ -6,7 +6,7 @@
 int main() {
 	test_mouvement_SIMD();
 	test_mouvement();
-	// test_morpho();
+	test_morpho();
 
 	return 0;
 }

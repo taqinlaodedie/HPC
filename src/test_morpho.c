@@ -25,4 +25,7 @@ void test_morpho()
 	SavePGM_ui8matrix(I1, 0, 320, 0, 240, "dilatation2.pgm");
 	erosion(I1, I0, 320, 240);
 	SavePGM_ui8matrix(I0, 0, 320, 0, 240, "erosion2.pgm");
+
+	free_ui8matrix(I0, -1, 321, -1, 241);
+	free_ui8matrix(I1, -1, 321, -1, 241);
 }
