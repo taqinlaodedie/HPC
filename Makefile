@@ -6,7 +6,7 @@
 # with a little help of Stephane Piskorski and Joel Falcou
 
 # -- Lile list ----------
-FILE = main.c test_mouvement.c test_mouvement_SIMD.c test_morpho.c morpho.c mouvement.c mouvement_SIMD.c nrutil.c vnrutil.c mutil.c
+FILE = main.c test_mouvement.c test_mouvement_SIMD.c test_morpho.c test_morpho_SIMD.c morpho.c morpho_SIMD.c mouvement.c mouvement_SIMD.c nrutil.c vnrutil.c mutil.c myutils.c
 
 # -- Paths ----------
 SRC_PATH = src
@@ -60,7 +60,7 @@ depend:
 clean:
 	rm -f $(OBJ)
 	rm -f ${PRODUCT}
-	rm -f *.pgm
+	rm -f test_img/mouvement/*.pgm test_img/morpho/*.pgm
 
 tar:
 	tar -cvf deriche_SSE.tar Makefile src include

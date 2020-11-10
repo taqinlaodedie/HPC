@@ -47,7 +47,7 @@
 /* #define TIMER_POSIX9      */
 /* #define TIMER_WIN32_Old   */
 /* #define TIMER_WIN32       */ //Already defined in Visual C
-/* #define TIMER_POSIX6      */
+/* #define TIMER_POSIX6      
 /* #define TIMER_RISCOS      */
 /* #define TIMER_VISUAL      */
 /* #define TIMER_CODEWARRIOR */

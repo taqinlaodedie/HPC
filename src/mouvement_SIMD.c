@@ -56,7 +56,7 @@ vuint8 cmpgt_vuint8(vuint8 a, vuint8 b)
 	return dst;
 }
 
-// Dans ce fichier: m est le nombre de colonne et n est le nombre de ligne
+// Dans ce fichier: n est le nombre de colonne et m est le nombre de ligne
 // Initialisation de l'algorithme pour t = 0
 void SigmaDelta_step0_SIMD(vuint8 **M0, vuint8 **I0, vuint8 **V0, int m, int n)
 {

@@ -4,7 +4,7 @@
 #include "mymacro.h"
 #include "mouvement.h"
 
-// Dans ce fichier: m est le nombre de colonne et n est le nombre de ligne
+// Dans ce fichier: n est le nombre de colonne et m est le nombre de ligne
 // Initialisation de l'algorithme pour t = 0
 void SigmaDelta_step0(uint8 **M0, uint8 **I0, uint8 **V0, int m, int n)
 {
