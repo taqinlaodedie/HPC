@@ -28,7 +28,7 @@ vuint8 cmplt_vuint8(vuint8 a, vuint8 b)
 	// Inverser le resultat s'il y a une seule valeur negative
 	dst = _mm_sub_epi8(dst, s);	// Si s[i] = 0, dst[i] ne change pas, sinon, si dst[i] = 0xff, dst[i] devient 0x00, si dst[i] = 0x00, dst[i] devient -0xfe
 	// toutes les dst[i] == -0xfe sont des 0 a inverser, donc elles doivent etre 0xff.
-	dst = _mm_cmpeq_epi8(dst, s0);	
+	dst = _mm_cmpeq_epi8(dst, s0);
 	dst = _mm_andnot_si128(dst, s1);
 
 	return dst;
@@ -50,7 +50,7 @@ vuint8 cmpgt_vuint8(vuint8 a, vuint8 b)
 	// Inverser le resultat s'il y a une seule valeur negative
 	dst = _mm_sub_epi8(dst, s);	// Si s[i] = 0, dst[i] ne change pas, sinon, si dst[i] = 0xff, dst[i] devient 0x00, si dst[i] = 0x00, dst[i] devient -0xfe
 	// toutes les dst[i] == -0xfe sont des 0 a inverser, donc elles doivent etre 0xff.
-	dst = _mm_cmpeq_epi8(dst, s0);	
+	dst = _mm_cmpeq_epi8(dst, s0);
 	dst = _mm_andnot_si128(dst, s1);
 
 	return dst;
@@ -58,14 +58,14 @@ vuint8 cmpgt_vuint8(vuint8 a, vuint8 b)
 
 // Dans ce fichier: m est le nombre de colonne et n est le nombre de ligne
 // Initialisation de l'algorithme pour t = 0
-void SigmaDelta_step0_SIMD(vuint8 **M0, vuint8 **I0, vuint8 **V0, int m, int n)
+void SigmaDelta_0step_SIMD(vuint8 **M0, vuint8 **I0, vuint8 **V0, int m, int n)
 {
 	int i, j;
 	vuint8 x, s;
 
 	s = _mm_set_epi8(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-	for (i = 0; i < m; i++) {
-		for (j = 0; j < n; j++) {
+	for (i = 0; i <= m; i++) {
+		for (j = 0; j <= n; j++) {
 			x = _mm_load_si128((vuint8 *)&I0[i][j]);
 			_mm_store_si128((vuint8 *)&M0[i][j], x);
 			_mm_store_si128((vuint8 *)&V0[i][j], s);
@@ -83,8 +83,8 @@ void SigmaDelta_1step_SIMD(vuint8 **M_t0, vuint8 **M_t1, vuint8 **I_t, int m, in
 	s1 = _mm_set_epi8(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 	s2 = _mm_set_epi8(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);
 
-	for (i = 0; i < m; i++) {
-		for (j = 0; j < n; j++) {
+	for (i = 0; i <= m; i++) {
+		for (j = 0; j <= n; j++) {
 			m1 = _mm_load_si128((vuint8 *)&M_t1[i][j]);
 			i0 = _mm_load_si128((vuint8 *)&I_t[i][j]);
 
@@ -107,8 +107,8 @@ void SigmaDelta_2step_SIMD(vuint8 **O_t, vuint8 **M_t, vuint8 **I_t, int m, int 
 	int i, j;
 	vuint8 m0, o0, i0, c, k1, k2;
 
-	for (i = 0; i < m; i++) {
-		for (j = 0; j < n; j++) {
+	for (i = 0; i <= m; i++) {
+		for (j = 0; j <= n; j++) {
 			m0 = _mm_load_si128((vuint8 *)&M_t[i][j]);
 			i0 = _mm_load_si128((vuint8 *)&I_t[i][j]);
 
@@ -132,8 +132,8 @@ void SigmaDelta_3step_SIMD(vuint8 **V_t0, vuint8 **V_t1, vuint8 **O_t, int m, in
 	Vmin = _mm_set_epi8(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 	Vmax = _mm_set_epi8(0xfe, 0xfe, 0xfe, 0xfe, 0xfe, 0xfe, 0xfe, 0xfe, 0xfe, 0xfe, 0xfe, 0xfe, 0xfe, 0xfe, 0xfe, 0xfe);
 
-	for (i = 0; i < m; i++) {
-		for (j = 0; j < n; j++) {
+	for (i = 0; i <= m; i++) {
+		for (j = 0; j <= n; j++) {
 			v1 = _mm_load_si128((vuint8 *)&V_t1[i][j]);
 			o0 = _mm_load_si128((vuint8 *)&O_t[i][j]);
 			o0 = _mm_adds_epu8(o0, o0);	// On considere que N vaut 2
@@ -161,8 +161,8 @@ void SigmaDelta_4step_SIMD(vuint8 **O_t, vuint8 **V_t, vuint8 **E_t, int m, int 
 	s0 = _mm_set_epi8(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	s1 = _mm_set_epi8(0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff);
 
-	for (i = 0; i < m; i++) {
-		for (j = 0; j < n; j++) {
+	for (i = 0; i <= m; i++) {
+		for (j = 0; j <= n; j++) {
 			o0 = _mm_load_si128((vuint8 *)&O_t[i][j]);
 			v0 = _mm_load_si128((vuint8 *)&V_t[i][j]);
 
