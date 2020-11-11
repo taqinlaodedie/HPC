@@ -18,8 +18,8 @@ void test_mouvement_SIMD()
 {
   struct timeval t1, t2;
   double timeused;
-	char *fname0 = "img/car_3100.pgm";
-  char *fname1 = "img/car_3101.pgm";
+	char *fname0 = "test_img/test1.pgm";
+  char *fname1 = "test_img/test2.pgm";
 	char *outfile = "test_img/mouvement/output_SIMD.pgm";
 	vuint8 **I0 = vui8matrix(0, IMG_HEIGHT-1, 0, IMG_LENGTH-1);
 	vuint8 **I1 = vui8matrix(0, IMG_HEIGHT-1, 0, IMG_LENGTH-1);
@@ -33,12 +33,9 @@ void test_mouvement_SIMD()
 	MLoadPGM_vui8matrix(fname0, 0, IMG_HEIGHT-1, 0, IMG_LENGTH-1, I0);
 	MLoadPGM_vui8matrix(fname1, 0, IMG_HEIGHT-1, 0, IMG_LENGTH-1, I1);
 
-  gettimeofday(&t1, NULL);
 	SigmaDelta_step0_SIMD(M0, I0, V0, IMG_HEIGHT, IMG_LENGTH);
-	SigmaDelta_1step_SIMD(M1, M0, I1, IMG_HEIGHT, IMG_LENGTH);
-	SigmaDelta_2step_SIMD(O1, M1, I1, IMG_HEIGHT, IMG_LENGTH);
-	SigmaDelta_3step_SIMD(V1, V0, O1, IMG_HEIGHT, IMG_LENGTH);
-	SigmaDelta_4step_SIMD(O1, V1, E1, IMG_HEIGHT, IMG_LENGTH);
+  gettimeofday(&t1, NULL);
+	SigmaDelta_1step_SIMD(M1, M0, I1, O1, V1, V0, E1, IMG_HEIGHT, IMG_LENGTH);
   gettimeofday(&t2, NULL);
   timeused = (t2.tv_sec - t1.tv_sec) + (double)(t2.tv_usec - t1.tv_usec)/1000000.0;
   printf("Temps pour une SD en SIMD: %f s\n", timeused);

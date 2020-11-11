@@ -15,8 +15,8 @@ void test_mouvement()
 {
 	struct timeval t1, t2;
 	double timeused;
-	char *fname0 = "img/car_3100.pgm";
-	char *fname1 = "img/car_3101.pgm";
+	char *fname0 = "test_img/test1.pgm";
+	char *fname1 = "test_img/test2.pgm";
 	char *outfile = "test_img/mouvement/output.pgm";
 	uint8 **I0 = ui8matrix(0, IMG_HEIGHT-1, 0, IMG_LENGTH-1);
 	uint8 **I1 = ui8matrix(0, IMG_HEIGHT-1, 0, IMG_LENGTH-1);
@@ -30,12 +30,9 @@ void test_mouvement()
 	MLoadPGM_ui8matrix(fname0, 0, IMG_HEIGHT-1, 0, IMG_LENGTH-1, I0);
 	MLoadPGM_ui8matrix(fname1, 0, IMG_HEIGHT-1, 0, IMG_LENGTH-1, I1);
 
-	gettimeofday(&t1, NULL);
 	SigmaDelta_step0(M0, I0, V0, IMG_HEIGHT, IMG_LENGTH);
-	SigmaDelta_1step(M1, M0, I1, IMG_HEIGHT, IMG_LENGTH);
-	SigmaDelta_2step(O1, M1, I1, IMG_HEIGHT, IMG_LENGTH);
-	SigmaDelta_3step(V1, V0, O1, IMG_HEIGHT, IMG_LENGTH, 2);
-	SigmaDelta_4step(O1, V1, E1, IMG_HEIGHT, IMG_LENGTH);
+	gettimeofday(&t1, NULL);
+	SigmaDelta_1step(M1, M0, I1, O1, V1, V0, E1, IMG_HEIGHT, IMG_LENGTH);
 	gettimeofday(&t2, NULL);
 	timeused = (t2.tv_sec - t1.tv_sec) + (double)(t2.tv_usec - t1.tv_usec)/1000000.0;
 	printf("Temps pour une SD: %f s\n", timeused);
