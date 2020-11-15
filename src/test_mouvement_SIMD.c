@@ -38,7 +38,7 @@ void test_mouvement_SIMD()
 	SigmaDelta_1step_SIMD(M1, M0, I1, O1, V1, V0, E1, IMG_HEIGHT, IMG_LENGTH/16);
   gettimeofday(&t2, NULL);
   timeused = (t2.tv_sec - t1.tv_sec) + (double)(t2.tv_usec - t1.tv_usec)/1000000.0;
-  printf("Temps pour une SD en SIMD: %f s\n", timeused);
+  printf("Temps pour 1 SD en SIMD: %f s\n", timeused);
 
 	SavePGM_vui8matrix(E1, 0, IMG_HEIGHT-1, 0, IMG_LENGTH-1, outfile);
 

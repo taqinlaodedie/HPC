@@ -5,5 +5,8 @@
 
 void erosion_SIMD(vuint8 **img_src, vuint8 **img_dst, int m, int n);
 void dilatation_SIMD(vuint8 **img_src, vuint8 **img_dst, int m, int n);
+void dilatation5_SIMD(vuint8 **img_src, vuint8 **img_dst, int m, int n);
+void erosion_SIMD_factorisee(vuint8 **img_src, vuint8 **img_dst, int m, int n);
+void dilatation_SIMD_factorisee(vuint8 **img_src, vuint8 **img_dst, int m, int n);
 
 #endif
