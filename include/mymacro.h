@@ -12,8 +12,9 @@
 
 #include "mutil.h"
 
-#define LARG	319
-#define HAUT	239
+#define LARG		319
+#define HAUT		239
+#define LARSIMD		19
 
 // Pour test
 #define IMG_LENGTH	576
@@ -32,8 +33,11 @@
 #define OR_THREE_VAL(a, b, c) _mm_or_si128(_mm_or_si128(a, b), c)
 
 #define SIGMADELTA(Iprec,Iact,Mprec,Mact,Oact,Vprec,Vact,Eact,m,n)	\
-		SigmaDelta_step0(Mprec,Iprec,Vprec,m,n);				\
+		SigmaDelta_step0(Mprec,Iprec,Vprec,m,n);					\
 		SigmaDelta_1step(Mact,Mprec,Iact,Oact,Vact,Vprec,Eact,m,n)
-#define COPIER_MATRICES(src,dst) copy_ui8matrix_ui8matrix(src, 0, HAUT, 0, LARG, dst)
+#define COPIER_MATRICES(src1,dst1,src2,dst2,src3,dst3)				\
+		copy_ui8matrix_ui8matrix(src1, 0, HAUT, 0, LARG, dst1);		\
+		copy_ui8matrix_ui8matrix(src2, 0, HAUT, 0, LARG, dst2);		\
+		copy_ui8matrix_ui8matrix(src3, 0, HAUT, 0, LARG, dst3)
 
 #endif

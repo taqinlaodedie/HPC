@@ -16,20 +16,20 @@ void MLoadPGM_vui8matrix(char *filename, int nrl, int nrh, int ncl, int nch, vui
 /* ------------------------------------------------------------------------------- */
 {
     /* cette version ne lit plus que le type P5 */
-    
+
     int height, width, gris;
     FILE *file;
-    
+
     char *buffer;
     int i;
-    
+
     buffer = (char*) calloc(80, sizeof(char));
     /* ouverture du fichier */
     file = fopen(filename,"rb");
-    if (file==NULL) 
+    if (file==NULL)
         nrerror("ouverture du fichier impossible\n");
     //nrerror("ouverture du fichier %s impossible\n", filename);
-    
+
     /* lecture de l'entete du fichier pgm */
     readitem(file, buffer);
     /*fscanf(fichier, "%s", buffer);*/
@@ -37,15 +37,15 @@ void MLoadPGM_vui8matrix(char *filename, int nrl, int nrh, int ncl, int nch, vui
     if(strcmp(buffer, "P5") != 0)
         nrerror("entete du fichier %s invalide\n");
     //nrerror("entete du fichier %s invalide\n", filename);
-    
-    width  = atoi(readitem(file, buffer));	
+
+    width  = atoi(readitem(file, buffer));
     height = atoi(readitem(file, buffer));
     gris   = atoi(readitem(file, buffer));
-    
+
     for(i=0; i<height; i++) {
         fread(&(m[i][0]), sizeof(vuint8), width/16, file);// sizeof(vuint8) = sizeof(uint8)*16
     }
-    
+
     fclose(file);
     free(buffer);
 }
@@ -58,7 +58,7 @@ void SavePGM_vui8matrix(vuint8 **m, int nrl, int nrh, int ncl, int nch, char *fi
   int ncol = nch-ncl+1;
 
   char buffer[80];
-  
+
   FILE *file;
   int  i;
 
@@ -76,4 +76,23 @@ void SavePGM_vui8matrix(vuint8 **m, int nrl, int nrh, int ncl, int nch, char *fi
 
   /* fermeture du fichier */
   fclose(file);
+}
+
+void copy_3_vui8matrix_vui8matrix(vuint8 **src1, vuint8 **dst1, vuint8 **src2, vuint8 **dst2, vuint8 **src3, vuint8 **dst3, int i0, int i1, int j0, int j1)
+{
+    int i, j;
+	vuint8 aux;
+
+	for(i = i0; i <= i1; i++) {
+		for(j = j0; j <= j1; j++) {
+			aux = _mm_load_si128((vuint8 *)&src1[i][j]);
+			_mm_store_si128((vuint8 *)&dst1[i][j], aux);
+
+			aux = _mm_load_si128((vuint8 *)&src2[i][j]);
+			_mm_store_si128((vuint8 *)&dst2[i][j], aux);
+
+			aux = _mm_load_si128((vuint8 *)&src3[i][j]);
+			_mm_store_si128((vuint8 *)&dst3[i][j], aux);
+		}
+	}
 }
