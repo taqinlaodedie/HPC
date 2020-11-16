@@ -10,8 +10,8 @@ void SigmaDelta_step0(uint8 **M0, uint8 **I0, uint8 **V0, int m, int n)
 {
 	int i, j, Vmin = 1;
 
-	for (i = 0; i < m; i++) {
-		for (j = 0; j < n; j++) {
+	for (i = 0; i <= m; i++) {
+		for (j = 0; j <= n; j++) {
 			M0[i][j] = I0[i][j];
 			V0[i][j] = Vmin;
 		}
@@ -26,8 +26,8 @@ void SigmaDelta_1step(uint8 **M_t0, uint8 **M_t1, uint8 **I_t0, uint8 **O_t0, ui
 	int i, j;
 	// int Vmin = 1, Vmax = 254;
 
-	for (i = 0; i < m; i++) {
-		for (j = 0; j < n; j++) {
+	for (i = 0; i <= m; i++) {
+		for (j = 0; j <= n; j++) {
 
 			// Estimation de Mt
 			if (M_t1[i][j] < I_t0[i][j]) M_t0[i][j] = M_t1[i][j] + 1;
