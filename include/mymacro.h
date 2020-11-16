@@ -17,8 +17,9 @@
 #define LARSIMD		19
 
 // Pour test
-#define IMG_LENGTH	576
-#define IMG_HEIGHT	576
+#define IMG_LENGTH	575
+#define IMG_HEIGHT	575
+#define IMG_LENSIMD	35
 
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
@@ -31,6 +32,44 @@
 
 #define AND_THREE_VAL(a, b, c) _mm_and_si128(_mm_and_si128(a, b), c)
 #define OR_THREE_VAL(a, b, c) _mm_or_si128(_mm_or_si128(a, b), c)
+
+#define INIT_MATRICES(I0, M0, V0, I1, M1, V1, O1, E1)	\
+		uint8 **I0 = ui8matrix(0, HAUT, 0, LARG);		\
+		uint8 **M0 = ui8matrix(0, HAUT, 0, LARG);		\
+		uint8 **V0 = ui8matrix(0, HAUT, 0, LARG);		\
+		uint8 **I1 = ui8matrix(0, HAUT, 0, LARG);		\
+		uint8 **M1 = ui8matrix(0, HAUT, 0, LARG);		\
+		uint8 **V1 = ui8matrix(0, HAUT, 0, LARG);		\
+		uint8 **O1 = ui8matrix(0, HAUT, 0, LARG);		\
+		uint8 **E1 = ui8matrix(0, HAUT, 0, LARG)
+#define FREE_MATRICES(I0, M0, V0, I1, M1, V1, O1, E1)	\
+		free_ui8matrix(I0, 0, HAUT, 0, LARG);			\
+		free_ui8matrix(M0, 0, HAUT, 0, LARG);			\
+		free_ui8matrix(V0, 0, HAUT, 0, LARG);			\
+		free_ui8matrix(I1, 0, HAUT, 0, LARG);			\
+		free_ui8matrix(M1, 0, HAUT, 0, LARG);			\
+		free_ui8matrix(V1, 0, HAUT, 0, LARG);			\
+		free_ui8matrix(O1, 0, HAUT, 0, LARG);			\
+		free_ui8matrix(E1, 0, HAUT, 0, LARG)
+
+#define INIT_VMATRICES(I0, M0, V0, I1, M1, V1, O1, E1)	\
+		vuint8 **I0 = vui8matrix(0, HAUT, 0, LARSIMD);	\
+		vuint8 **M0 = vui8matrix(0, HAUT, 0, LARSIMD);	\
+		vuint8 **V0 = vui8matrix(0, HAUT, 0, LARSIMD);	\
+		vuint8 **I1 = vui8matrix(0, HAUT, 0, LARSIMD);	\
+		vuint8 **M1 = vui8matrix(0, HAUT, 0, LARSIMD);	\
+		vuint8 **V1 = vui8matrix(0, HAUT, 0, LARSIMD);	\
+		vuint8 **O1 = vui8matrix(0, HAUT, 0, LARSIMD);	\
+		vuint8 **E1 = vui8matrix(0, HAUT, 0, LARSIMD)
+#define FREE_VMATRICES(I0, M0, V0, I1, M1, V1, O1, E1)	\
+		free_vui8matrix(I0, 0, HAUT, 0, LARSIMD);		\
+		free_vui8matrix(M0, 0, HAUT, 0, LARSIMD);		\
+		free_vui8matrix(V0, 0, HAUT, 0, LARSIMD);		\
+		free_vui8matrix(I1, 0, HAUT, 0, LARSIMD);		\
+		free_vui8matrix(M1, 0, HAUT, 0, LARSIMD);		\
+		free_vui8matrix(V1, 0, HAUT, 0, LARSIMD);		\
+		free_vui8matrix(O1, 0, HAUT, 0, LARSIMD);		\
+		free_vui8matrix(E1, 0, HAUT, 0, LARSIMD)
 
 #define SIGMADELTA(Iprec,Iact,Mprec,Mact,Oact,Vprec,Vact,Eact,m,n)	\
 		SigmaDelta_step0(Mprec,Iprec,Vprec,m,n);					\
