@@ -45,6 +45,8 @@ void test_multi_morpho()
 		fname0[17] = outfile[17] = aux % 10 + '0';
 	}
 
+	free(fname0);
+	free(outfile);
 	free_ui8matrix(I0, -1, HAUTMORPH, -1, LARGMORPH);
 	free_ui8matrix(I1, -1, HAUTMORPH, -1, LARGMORPH);
 

@@ -46,6 +46,9 @@ void test_multi_mouvement()
 		fname1[11] = outfile[17] = aux % 10 + '0';
 	}
 
+	free(fname0);
+	free(fname1);
+	free(outfile);
 	FREE_MATRICES(I0, M0, V0, I1, M1, V1, O1, E1);
 
 	end_t = clock();
