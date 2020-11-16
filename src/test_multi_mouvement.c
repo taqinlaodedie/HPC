@@ -8,8 +8,10 @@
 #include "nrdef.h"
 #include "nrutil.h"
 #include "mouvement.h"
-#include "test_mouvement.h"
+#include "test_mouvement_SIMD.h"
+#include "test_multi_mouvement.h"
 #include "mymacro.h"
+#include "myutils.h"
 #include "sys/time.h"
 
 void test_multi_mouvement()
@@ -37,8 +39,6 @@ void test_multi_mouvement()
 	uint8 **V1 = ui8matrix(0, HAUT, 0, LARG);		// image variance/d'ecart type
 	uint8 **O1 = ui8matrix(0, HAUT, 0, LARG);		// image difference
 	uint8 **E1 = ui8matrix(0, HAUT, 0, LARG);		// image etiquettes
-	// uint8 **ero = ui8matrix(0, HAUT, 0, LARG);		// image etiquettes
-	// uint8 **dil = ui8matrix(0, HAUT, 0, LARG);		// image etiquettes
 
 	MLoadPGM_ui8matrix(fname0, 0, HAUT, 0, LARG, I0);
 
@@ -47,9 +47,7 @@ void test_multi_mouvement()
 		MLoadPGM_ui8matrix(fname0, 0, HAUT, 0, LARG, I1);
 		SIGMADELTA(I0, I1, M0, M1, O1, V0, V1, E1, HAUT+1, LARG+1);
 		SavePGM_ui8matrix(E1, 0, HAUT, 0, LARG, outfile);
-		COPIER_MATRICES(I1, I0);
-		COPIER_MATRICES(M1, M0);
-		COPIER_MATRICES(V1, V0);
+		COPIER_MATRICES(I1, I0, M1, M0, V1, V0);
 		strcpy(fname0, fnamE1);
 		aux = (fname0[9]-'0')*100 + (fname0[10]-'0')*10 + (fname0[11]-'0') + 1;
 		fnamE1[9] = outfile[15] = aux / 100 + '0';
