@@ -20,6 +20,7 @@ void test_morpho_SIMD()
 	char *fname0 = "test_img/mouvement/output_SIMD.pgm";
 	vuint8 **I0 = vui8matrix(-2, IMG_HEIGHT+2, -2, IMG_LENGTH/16+2);
 	vuint8 **I1 = vui8matrix(-2, IMG_HEIGHT+2, -2, IMG_LENGTH/16+2);
+	vuint8 **tmp = vui8matrix(-2, IMG_HEIGHT+2, -2, IMG_LENGTH/16+2);
 	zero_vui8matrix(I0, -2, IMG_HEIGHT+2, -2, IMG_LENGTH/16+2);
 	zero_vui8matrix(I1, -2, IMG_HEIGHT+2, -2, IMG_LENGTH/16+2);
 
@@ -57,8 +58,15 @@ void test_morpho_SIMD()
 	dilatation5_SIMD(I0, I1, IMG_HEIGHT, IMG_LENGTH/16);
 	gettimeofday(&t2, NULL);
 	timeused = (t2.tv_sec - t1.tv_sec) + (double)(t2.tv_usec - t1.tv_usec)/1000000.0;
-	printf("Temps pour 1 dilatations en 5*5: %f s\n", timeused);
+	printf("Temps pour 1 dilatation en 5*5: %f s\n", timeused);
 	SavePGM_vui8matrix(I1, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/dilatation5_SIMD.pgm");
+
+	gettimeofday(&t1, NULL);
+	dilatation5_SIMD_factorisee(I0, I1, tmp, IMG_HEIGHT, IMG_LENGTH/16);
+	gettimeofday(&t2, NULL);
+	timeused = (t2.tv_sec - t1.tv_sec) + (double)(t2.tv_usec - t1.tv_usec)/1000000.0;
+	printf("Temps pour 1 dilatation factorisee en 5*5: %f s\n", timeused);
+	SavePGM_vui8matrix(I1, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/dilatation5_SIMD_factorisee.pgm");
 
 	gettimeofday(&t1, NULL);
 	dilatation_SIMD(I0, I1, IMG_HEIGHT, IMG_LENGTH/16);
@@ -70,4 +78,5 @@ void test_morpho_SIMD()
 
 	free_vui8matrix(I0, -2, IMG_HEIGHT+2, -2, IMG_LENGTH/16+2);
 	free_vui8matrix(I1, -2, IMG_HEIGHT+2, -2, IMG_LENGTH/16+2);
+	free_vui8matrix(tmp, -2, IMG_HEIGHT+2, -2, IMG_LENGTH/16+2);
 }

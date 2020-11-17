@@ -19,9 +19,8 @@
 #define HAUTMORPH	240
 
 // Pour test
-#define IMG_LENGTH	575
-#define IMG_HEIGHT	575
-#define IMG_LENSIMD	35
+#define IMG_LENGTH	576
+#define IMG_HEIGHT	576
 
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
