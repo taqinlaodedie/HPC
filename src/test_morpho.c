@@ -31,15 +31,13 @@ void test_morpho()
 	struct timeval t1, t2;
 	double timeused;
 
-	char *fname0 = "test_img/mouvement/output.pgm";
-	uint8 **I0 = ui8matrix(-1, IMG_HEIGHT+1, -1, IMG_LENGTH+1);
-	uint8 **I1 = ui8matrix(-1, IMG_HEIGHT+1, -1, IMG_LENGTH+1);
-	uint8 **I2 = ui8matrix(-1, IMG_HEIGHT+1, -1, IMG_LENGTH+1);
-	uint8 **I3 = ui8matrix(-1, IMG_HEIGHT+1, -1, IMG_LENGTH+1);
-	uint8 **I4 = ui8matrix(-1, IMG_HEIGHT+1, -1, IMG_LENGTH+1);
+	/* Benchmark */
+	// char *fname0 = "test_img/mouvement/output.pgm";
+	// uint8 **I0 = ui8matrix(-1, IMG_HEIGHT+1, -1, IMG_LENGTH+1);
+	// uint8 **I1 = ui8matrix(-1, IMG_HEIGHT+1, -1, IMG_LENGTH+1);
 
-	MLoadPGM_ui8matrix(fname0, 0, IMG_HEIGHT-1, 0, IMG_LENGTH-1, I0);
-	traitement_bord(I0, IMG_HEIGHT, IMG_LENGTH);
+	// MLoadPGM_ui8matrix(fname0, 0, IMG_HEIGHT-1, 0, IMG_LENGTH-1, I0);
+	// traitement_bord(I0, IMG_HEIGHT, IMG_LENGTH);
 
 	// gettimeofday(&t1, NULL);
 	// erosion(I0, I1, IMG_HEIGHT, IMG_LENGTH);
@@ -56,16 +54,33 @@ void test_morpho()
 	// printf("Temps pour 1 dilatation: %f s\n", timeused);
 	// SavePGM_ui8matrix(I0, 0, IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/dilatation1.pgm");
 
-	gettimeofday(&t1, NULL);
-	morpho_pipeline(I0, I1, I2, I3, I4, IMG_HEIGHT, IMG_LENGTH);
-	gettimeofday(&t2, NULL);
-	timeused = (t2.tv_sec - t1.tv_sec) + (double)(t2.tv_usec - t1.tv_usec)/1000000.0;
-	printf("Temps pour 1 pipeline: %f s\n", timeused);
-	SavePGM_ui8matrix(I4, 0, IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/pipeline.pgm");
+	// free_ui8matrix(I0, -1, IMG_HEIGHT+1, -1, IMG_LENGTH+1);
+	// free_ui8matrix(I1, -1, IMG_HEIGHT+1, -1, IMG_LENGTH+1);
 
-	free_ui8matrix(I0, -1, IMG_HEIGHT+1, -1, IMG_LENGTH+1);
-	free_ui8matrix(I1, -1, IMG_HEIGHT+1, -1, IMG_LENGTH+1);
-	free_ui8matrix(I2, -1, IMG_HEIGHT+1, -1, IMG_LENGTH+1);
-	free_ui8matrix(I3, -1, IMG_HEIGHT+1, -1, IMG_LENGTH+1);
-	free_ui8matrix(I4, -1, IMG_HEIGHT+1, -1, IMG_LENGTH+1);
+	/* Test unitaire avec des images de 5*5*/
+  	uint8 **I0 = ui8matrix(-1, 5, -1, 5);
+	uint8 **I1 = ui8matrix(-1, 5, -1, 5);
+
+	// Initialisation en 0
+	for (int i = -1; i <= 5; i++) {
+		for (int j = -1; j <= 5; j++) {
+			I0[i][j] = 0;
+		}
+	}
+
+	for (int i = 0; i <=4; i++) {
+		I0[1][i] = 255;
+		I0[2][i] = 255;
+		I0[3][i] = 255;
+	}
+
+	printf("Test unitaire pour morpho\n");
+	display_ui8matrix(I0, 0, 4, 0, 4, " [%03d] ", "I0");
+	erosion(I0, I1, 5, 5);
+	display_ui8matrix(I1, 0, 4, 0, 4, " [%03d] ", "erosion");
+	dilatation(I0, I1, 5, 5);
+	display_ui8matrix(I1, 0, 4, 0, 4, " [%03d] ", "dilatation");
+	
+	free_ui8matrix(I0, -1, 5, -1, 5);
+  	free_ui8matrix(I1, -1, 5, -1, 5);
 }
