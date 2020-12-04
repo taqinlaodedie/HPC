@@ -75,6 +75,20 @@
 		free_vui8matrix(O1, 0, HAUT, 0, LARSIMD);		\
 		free_vui8matrix(E1, 0, HAUT, 0, LARSIMD)
 
+#define INIT_MORPHO_VMATRICES(I0, E0, D0, D1, E1)						\
+		vuint8 **I0 = vui8matrix(-2, HAUT+2, -2, LARSIMD+3);	\
+		vuint8 **E0 = vui8matrix(-2, HAUT+2, -2, LARSIMD+3);	\
+		vuint8 **D0 = vui8matrix(-2, HAUT+2, -2, LARSIMD+3);	\
+		vuint8 **D1 = vui8matrix(-2, HAUT+2, -2, LARSIMD+3);	\
+		vuint8 **E1 = vui8matrix(-2, HAUT+2, -2, LARSIMD+3)
+#define FREE_MORPHO_VMATRICES(I0, E0, D0, D1, E1)						\
+		free_vui8matrix(I0, -2, HAUT+2, -2, LARSIMD+3);			\
+		free_vui8matrix(E0, -2, HAUT+2, -2, LARSIMD+3);			\
+		free_vui8matrix(D0, -2, HAUT+2, -2, LARSIMD+3);			\
+		free_vui8matrix(D1, -2, HAUT+2, -2, LARSIMD+3);			\
+		free_vui8matrix(E1, -2, HAUT+2, -2, LARSIMD+3)
+
+
 #define SIGMADELTA(Iprec,Iact,Mprec,Mact,Oact,Vprec,Vact,Eact,m,n)	\
 		SigmaDelta_step0(Mprec,Iprec,Vprec,m,n);					\
 		SigmaDelta_1step(Mact,Mprec,Iact,Oact,Vact,Vprec,Eact,m,n)

@@ -7,12 +7,15 @@
 #include <time.h>
 #include "nrdef.h"
 #include "nrutil.h"
-#include "morpho.h"
+#include "vnrdef.h"
+#include "vnrutil.h"
+#include "morpho_SIMD.h"
+#include "test_multi_morpho_SIMD.h"
 #include "mymacro.h"
 #include "myutils.h"
 #include "sys/time.h"
 
-void test_multi_morpho()
+void test_multi_morpho_SIMD()
 {
 	clock_t start_t, end_t;
 	double total_t;
@@ -25,18 +28,17 @@ void test_multi_morpho()
 	strcpy(outfile,"output/xmorph_e001.pgm");
 				//  012345678901234567890123
 
-	uint8 **I0 = ui8matrix(-1, HAUTMORPH, -1, LARGMORPH);
-	uint8 **I1 = ui8matrix(-1, HAUTMORPH, -1, LARGMORPH);
+	INIT_MORPHO_VMATRICES(I0, E0, D0, D1, E1);
 
 	for(int i = 2; i <= 200; i++)
 	{
-		MLoadPGM_ui8matrix(fname0, 0, HAUTMORPH, 0, LARGMORPH, I0);
-		erosion(I0, I1, HAUT+1, LARG+1);
-		dilatation(I1, I0, HAUT+1, LARG+1);
-		dilatation(I0, I1, HAUT+1, LARG+1);
-		erosion(I1, I0, HAUT+1, LARG+1);
+		MLoadPGM_vui8matrix(fname0, 0, HAUT, 0, LARG, I0);
+		erosion_SIMD(I0, E0, HAUTMORPH, LARGMORPH/16);
+		dilatation_SIMD(E0, D0, HAUTMORPH, LARGMORPH/16);
+		dilatation_SIMD(D0, D1, HAUTMORPH, LARGMORPH/16);
+		erosion_SIMD(D1, E1, HAUTMORPH, LARGMORPH/16);
 		// printf("hola0 %d\n", i);
-		SavePGM_ui8matrix(I0, 0, HAUTMORPH, 0, LARGMORPH, outfile);
+		SavePGM_vui8matrix(E1, 0, HAUT, 0, LARG, outfile);
 		// printf("hola1 %d\n", i);
 
 		aux = (fname0[15]-'0')*100 + (fname0[16]-'0')*10 + (fname0[17]-'0') + 1;
@@ -47,10 +49,9 @@ void test_multi_morpho()
 
 	free(fname0);
 	free(outfile);
-	free_ui8matrix(I0, -1, HAUTMORPH, -1, LARGMORPH);
-	free_ui8matrix(I1, -1, HAUTMORPH, -1, LARGMORPH);
+	FREE_MORPHO_VMATRICES(I0, E0, D0, D1, E1);
 
 	end_t = clock();
 	total_t = (double)(end_t - start_t) / CLOCKS_PER_SEC;
-	printf("Temps pour 200 morphos en: %f\n", total_t);
+	printf("Temps pour 200 morphos en SIMD: %f\n", total_t);
 }
