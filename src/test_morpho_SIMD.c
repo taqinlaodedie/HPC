@@ -64,7 +64,23 @@ void test_morpho_SIMD()
 	CHRONO(dilatation_SIMD(I1, I2, IMG_HEIGHT, IMG_LENGTH/16);	\
 		dilatation_SIMD(I2, I3, IMG_HEIGHT, IMG_LENGTH/16), "2 dilatations en SIMD");
 	SavePGM_vui8matrix(I3, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/2dilatation_SIMD.pgm");
-	
+
+	CHRONO(for (int i = 0; i < 200; i++) {	\
+		dilatation_SIMD(I1, I3, IMG_HEIGHT, IMG_LENGTH/16);
+		}, "200 dilatation_SIMD");
+
+	CHRONO(for (int i = 0; i < 200; i++) {	\
+		dilatation_SIMD_factorisee(I1, I3, IMG_HEIGHT, IMG_LENGTH/16);
+		}, "200 dilatation_SIMD_factorisee");
+
+	CHRONO(for (int i = 0; i < 200; i++) {	\
+		dilatation5_SIMD(I1, I3, IMG_HEIGHT, IMG_LENGTH/16);
+		}, "200 dilatation5_SIMD");
+
+	CHRONO(for (int i = 0; i < 200; i++) {	\
+		dilatation_SIMD(I1, I2, IMG_HEIGHT, IMG_LENGTH/16);	\
+		dilatation_SIMD(I2, I3, IMG_HEIGHT, IMG_LENGTH/16);
+		}, "400 dilatations en SIMD");
 
 	free_vui8matrix(I0, -2, IMG_HEIGHT+2, -2, IMG_LENGTH/16+2);
 	free_vui8matrix(I1, -2, IMG_HEIGHT+2, -2, IMG_LENGTH/16+2);
