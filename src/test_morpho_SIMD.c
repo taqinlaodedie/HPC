@@ -34,65 +34,55 @@ void test_morpho_SIMD()
 
 	MLoadPGM_vui8matrix(fname0, 0, IMG_HEIGHT-1, 0, IMG_LENGTH-1, I0);
 
-	// gettimeofday(&t1, NULL);
-	// erosion_SIMD(I0, I1, IMG_HEIGHT, IMG_LENGTH/16);
-	// gettimeofday(&t2, NULL);
-	// timeused = (t2.tv_sec - t1.tv_sec) + (double)(t2.tv_usec - t1.tv_usec)/1000000.0;
-	// printf("Temps pour 1 erosion en SIMD: %f s\n", timeused);
-	// SavePGM_vui8matrix(I1, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/erosion1_SIMD.pgm");
-
-	// gettimeofday(&t1, NULL);
-	// erosion_SIMD_factorisee(I0, I1, IMG_HEIGHT, IMG_LENGTH/16);
-	// gettimeofday(&t2, NULL);
-	// timeused = (t2.tv_sec - t1.tv_sec) + (double)(t2.tv_usec - t1.tv_usec)/1000000.0;
-	// printf("Temps pour 1 erosion factorisee en SIMD: %f s\n", timeused);
-	// SavePGM_vui8matrix(I1, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/erosion1_SIMD_factorisee.pgm");
-
-	// gettimeofday(&t1, NULL);
-	// dilatation_SIMD(I1, I0, IMG_HEIGHT, IMG_LENGTH/16);
-	// gettimeofday(&t2, NULL);
-	// timeused = (t2.tv_sec - t1.tv_sec) + (double)(t2.tv_usec - t1.tv_usec)/1000000.0;
-	// printf("Temps pour 1 dilatation en SIMD: %f s\n", timeused);
-	// SavePGM_vui8matrix(I0, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/dilatation1_SIMD.pgm");
-
-	// gettimeofday(&t1, NULL);
-	// dilatation_SIMD_factorisee(I1, I0, IMG_HEIGHT, IMG_LENGTH/16);
-	// gettimeofday(&t2, NULL);
-	// timeused = (t2.tv_sec - t1.tv_sec) + (double)(t2.tv_usec - t1.tv_usec)/1000000.0;
-	// printf("Temps pour 1 dilatation factorisee en SIMD: %f s\n", timeused);
-	// SavePGM_vui8matrix(I0, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/dilatation1_SIMD_factorisee.pgm");
-
-	// gettimeofday(&t1, NULL);
-	// dilatation5_SIMD(I0, I1, IMG_HEIGHT, IMG_LENGTH/16);
-	// gettimeofday(&t2, NULL);
-	// timeused = (t2.tv_sec - t1.tv_sec) + (double)(t2.tv_usec - t1.tv_usec)/1000000.0;
-	// printf("Temps pour 1 dilatation en 5*5: %f s\n", timeused);
-	// SavePGM_vui8matrix(I1, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/dilatation5_SIMD.pgm");
-
-	// gettimeofday(&t1, NULL);
-	// dilatation5_SIMD_factorisee(I0, I1, tmp, IMG_HEIGHT, IMG_LENGTH/16);
-	// gettimeofday(&t2, NULL);
-	// timeused = (t2.tv_sec - t1.tv_sec) + (double)(t2.tv_usec - t1.tv_usec)/1000000.0;
-	// printf("Temps pour 1 dilatation factorisee en 5*5: %f s\n", timeused);
-	// SavePGM_vui8matrix(I1, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/dilatation5_SIMD_factorisee.pgm");
-
-	// gettimeofday(&t1, NULL);
-	// dilatation_SIMD(I0, I1, IMG_HEIGHT, IMG_LENGTH/16);
-	// dilatation_SIMD(I1, I0, IMG_HEIGHT, IMG_LENGTH/16);
-	// gettimeofday(&t2, NULL);
-	// timeused = (t2.tv_sec - t1.tv_sec) + (double)(t2.tv_usec - t1.tv_usec)/1000000.0;
-	// printf("Temps pour 2 dilatations en SIMD: %f s\n", timeused);
-	// SavePGM_vui8matrix(I0, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/2dilatation_SIMD.pgm");
-
-	gettimeofday(&t1, NULL);
-	morpho_SIMD_pipeline(I0, I1, I2, I3, I4, IMG_HEIGHT, IMG_LENGTH/16);
-	gettimeofday(&t2, NULL);
-	timeused = (t2.tv_sec - t1.tv_sec) + (double)(t2.tv_usec - t1.tv_usec)/1000000.0;
-	printf("Temps pour pipeline en SIMD: %f s\n", timeused);
+	CHRONO(erosion_SIMD(I0, I1, IMG_HEIGHT, IMG_LENGTH/16);	\
+		dilatation_SIMD(I1, I2, IMG_HEIGHT, IMG_LENGTH/16);	\
+		dilatation_SIMD(I2, I3, IMG_HEIGHT, IMG_LENGTH/16);	\
+		erosion_SIMD(I3, I4, IMG_HEIGHT, IMG_LENGTH/16), "chaine morpho SIMD");
+	
+	CHRONO(morpho_SIMD_pipeline(I0, I1, I2, I3, I4, IMG_HEIGHT, IMG_LENGTH/16), "pipeline SIMD");
 	SavePGM_vui8matrix(I1, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/pipeline_e1_SIMD.pgm");
 	SavePGM_vui8matrix(I2, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/pipeline_d1_SIMD.pgm");
 	SavePGM_vui8matrix(I3, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/pipeline_d2_SIMD.pgm");
 	SavePGM_vui8matrix(I4, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/pipeline_e2_SIMD.pgm");
+
+	CHRONO(erosion_SIMD(I0, I1, IMG_HEIGHT, IMG_LENGTH/16), "erosion SIMD");
+	SavePGM_vui8matrix(I1, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/erosion1_SIMD.pgm");
+
+	CHRONO(erosion_SIMD_factorisee(I0, I1, IMG_HEIGHT, IMG_LENGTH/16), "erosion factorisee en SIMD");
+	SavePGM_vui8matrix(I1, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/erosion1_SIMD_factorisee.pgm");
+
+	CHRONO(dilatation_SIMD(I1, I2, IMG_HEIGHT, IMG_LENGTH/16), "dilatation en SIMD");
+	SavePGM_vui8matrix(I2, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/dilatation1_SIMD.pgm");
+
+	CHRONO(dilatation_SIMD_factorisee(I1, I2, IMG_HEIGHT, IMG_LENGTH/16), "dilatation factorisee en SIMD");
+	SavePGM_vui8matrix(I2, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/dilatation1_SIMD_factorisee.pgm");
+
+	CHRONO(dilatation5_SIMD(I1, I3, IMG_HEIGHT, IMG_LENGTH/16), "dilatation en 5*5");
+	SavePGM_vui8matrix(I3, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/dilatation5_SIMD.pgm");
+
+	CHRONO(dilatation5_SIMD_factorisee(I1, I3, tmp, IMG_HEIGHT, IMG_LENGTH/16), "dilatation factorisee en 5*5");
+	SavePGM_vui8matrix(I3, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/dilatation5_SIMD_factorisee.pgm");
+
+	CHRONO(dilatation_SIMD(I1, I2, IMG_HEIGHT, IMG_LENGTH/16);	\
+		dilatation_SIMD(I2, I3, IMG_HEIGHT, IMG_LENGTH/16), "2 dilatations en SIMD");
+	SavePGM_vui8matrix(I3, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/2dilatation_SIMD.pgm");
+
+	CHRONO(for (int i = 0; i < 200; i++) {	\
+		dilatation_SIMD(I1, I3, IMG_HEIGHT, IMG_LENGTH/16);
+		}, "200 dilatation_SIMD");
+
+	CHRONO(for (int i = 0; i < 200; i++) {	\
+		dilatation_SIMD_factorisee(I1, I3, IMG_HEIGHT, IMG_LENGTH/16);
+		}, "200 dilatation_SIMD_factorisee");
+
+	CHRONO(for (int i = 0; i < 200; i++) {	\
+		dilatation5_SIMD(I1, I3, IMG_HEIGHT, IMG_LENGTH/16);
+		}, "200 dilatation5_SIMD");
+
+	CHRONO(for (int i = 0; i < 200; i++) {	\
+		dilatation_SIMD(I1, I2, IMG_HEIGHT, IMG_LENGTH/16);	\
+		dilatation_SIMD(I2, I3, IMG_HEIGHT, IMG_LENGTH/16);
+		}, "400 dilatations en SIMD");
 
 	free_vui8matrix(I0, -2, IMG_HEIGHT+2, -2, IMG_LENGTH/16+2);
 	free_vui8matrix(I1, -2, IMG_HEIGHT+2, -2, IMG_LENGTH/16+2);

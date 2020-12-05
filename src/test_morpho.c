@@ -31,6 +31,8 @@ void test_morpho()
 	struct timeval t1, t2;
 	double timeused;
 
+	test_unitaire_morpho();
+
 	/* Test unitaire avec des images de 5*5*/
   	uint8 **I0 = ui8matrix(-1, 5, -1, 5);
 	uint8 **I1 = ui8matrix(-1, 5, -1, 5);
@@ -59,33 +61,23 @@ void test_morpho()
 	free_ui8matrix(I0, -1, 5, -1, 5);
   	free_ui8matrix(I1, -1, 5, -1, 5);
 
-	test_unitaire_morpho();
-	//
-  	// /* Benchmark */
-	// char *fname0 = "test_img/mouvement/output.pgm";
-	// I0 = ui8matrix(-1, IMG_HEIGHT+1, -1, IMG_LENGTH+1);
-	// I1 = ui8matrix(-1, IMG_HEIGHT+1, -1, IMG_LENGTH+1);
-	//
-	// MLoadPGM_ui8matrix(fname0, 0, IMG_HEIGHT-1, 0, IMG_LENGTH-1, I0);
-	// traitement_bord(I0, IMG_HEIGHT, IMG_LENGTH);
-	//
-	// gettimeofday(&t1, NULL);
-	// erosion(I0, I1, IMG_HEIGHT, IMG_LENGTH);
-	// gettimeofday(&t2, NULL);
-	// timeused = (t2.tv_sec - t1.tv_sec) + (double)(t2.tv_usec - t1.tv_usec)/1000000.0;
-	// printf("Temps pour 1 erosion: %f s\n", timeused);
-	// SavePGM_ui8matrix(I1, 0, IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/erosion1.pgm");
-	// traitement_bord(I1, IMG_HEIGHT, IMG_LENGTH);
-	//
-	// gettimeofday(&t1, NULL);
-	// dilatation(I1, I0, IMG_HEIGHT, IMG_LENGTH);
-	// gettimeofday(&t2, NULL);
-	// timeused = (t2.tv_sec - t1.tv_sec) + (double)(t2.tv_usec - t1.tv_usec)/1000000.0;
-	// printf("Temps pour 1 dilatation: %f s\n", timeused);
-	// SavePGM_ui8matrix(I0, 0, IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/dilatation1.pgm");
-	//
-	// free_ui8matrix(I0, -1, IMG_HEIGHT+1, -1, IMG_LENGTH+1);
-	// free_ui8matrix(I1, -1, IMG_HEIGHT+1, -1, IMG_LENGTH+1);
+	/* Benchmark */
+	char *fname0 = "test_img/mouvement/output.pgm";
+	I0 = ui8matrix(-1, IMG_HEIGHT+1, -1, IMG_LENGTH+1);
+	I1 = ui8matrix(-1, IMG_HEIGHT+1, -1, IMG_LENGTH+1);
+
+	MLoadPGM_ui8matrix(fname0, 0, IMG_HEIGHT-1, 0, IMG_LENGTH-1, I0);
+	traitement_bord(I0, IMG_HEIGHT, IMG_LENGTH);
+
+	CHRONO(erosion(I0, I1, IMG_HEIGHT, IMG_LENGTH);	\
+		dilatation(I1, I0, IMG_HEIGHT, IMG_LENGTH);	\
+		dilatation(I0, I1, IMG_HEIGHT, IMG_LENGTH);	\
+		erosion(I1, I0, IMG_HEIGHT, IMG_LENGTH), "chaine de morpho");
+	SavePGM_ui8matrix(I0, 0, IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/chaine_de_morpho.pgm");
+
+
+	free_ui8matrix(I0, -1, IMG_HEIGHT+1, -1, IMG_LENGTH+1);
+	free_ui8matrix(I1, -1, IMG_HEIGHT+1, -1, IMG_LENGTH+1);
 }
 
 void test_unitaire_morpho()

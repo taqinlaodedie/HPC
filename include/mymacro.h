@@ -98,4 +98,11 @@
 		copy_ui8matrix_ui8matrix(src2, 0, HAUT, 0, LARG, dst2);		\
 		copy_ui8matrix_ui8matrix(src3, 0, HAUT, 0, LARG, dst3)
 
+#define CHRONO(instr, msg)				\
+		gettimeofday(&t1, NULL);	\
+		instr;						\
+		gettimeofday(&t2, NULL);	\
+		timeused = (t2.tv_sec - t1.tv_sec) + (double)(t2.tv_usec - t1.tv_usec)/1000000.0;;	\
+		printf("Temps pour %s: %f s\n", msg, timeused);
+
 #endif
