@@ -18,9 +18,11 @@ void erosion(uint8 **img_src, uint8 **img_dst, int m, int n)
 	for (i = 0; i < m; i++) {
 		for (j = 0; j < n; j++) {
 			flag = 255;
+			// printf("img_src[%d][%d] = %d\n", i, j, img_src[i][j]);
 			for (k = i - 1; k <= i + 1; k++) {
 				for (l = j - 1; l <= j + 1; l++) {
 					flag &= img_src[k][l];
+					// printf("  [%d][%d] = %d\n", k, l, img_src[k][l]);
 				}
 			}
 			img_dst[i][j] = flag;

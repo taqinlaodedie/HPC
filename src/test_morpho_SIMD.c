@@ -17,6 +17,8 @@ void test_morpho_SIMD()
 	struct timeval t1, t2;
 	double timeused;
 
+	test_unitaire_morpho_SIMD();
+
 	char *fname0 = "test_img/mouvement/output_SIMD.pgm";
 	vuint8 **I0 = vui8matrix(-2, IMG_HEIGHT+2, -2, IMG_LENGTH/16+2);
 	vuint8 **I1 = vui8matrix(-2, IMG_HEIGHT+2, -2, IMG_LENGTH/16+2);
@@ -98,4 +100,77 @@ void test_morpho_SIMD()
 	free_vui8matrix(I3, -2, IMG_HEIGHT+2, -2, IMG_LENGTH/16+2);
 	free_vui8matrix(I4, -2, IMG_HEIGHT+2, -2, IMG_LENGTH/16+2);
 	free_vui8matrix(tmp, -2, IMG_HEIGHT+2, -2, IMG_LENGTH/16+2);
+}
+
+void test_unitaire_morpho_SIMD()
+{
+	vuint8 **tab0 = vui8matrix(-1, 1, -1, 1);
+	vuint8 **tab1 = vui8matrix(-1, 1, -1, 1);
+	vuint8 aux;
+	vuint8 zer = init_vuint8(0);
+	vuint8 one = init_vuint8(255);
+
+	/***** TESTS UNITAIRES EROSION *****/
+
+	// Initialisation
+	zero_vui8matrix(tab0, -1, 1, -1, 1);
+	zero_vui8matrix(tab1, -1, 1, -1, 1);
+
+	printf("\n");
+	display_vui8matrix(tab0, -1, 1, -1, 1, " [%d]", "Test unitaire SIMD EROSION");
+
+	for (int i = -1; i <= 1; i++) {
+		for (int j = -1; j <= 1; j++) {
+			_mm_store_si128((vuint8 *)&tab0[i][j], one);
+			erosion_SIMD(tab0, tab1, 1, 1);
+			// display_vui8matrix(tab0, -1, 1, -1, 1, " [%03d] ", "\nModifie");
+			// display_vui8matrix(tab1, -1, 1, -1, 1, " [%03d] ", "Resultat");
+			aux = _mm_load_si128((vuint8 *)&tab1[0][0]);
+			display_vuint8(aux, "[%03d] ", "");
+			printf("\n");
+			// if( cmpeq_vuint8(aux, zer) )
+			// 	printf("OK\n");
+			// else
+			// {
+			// 	printf("KO\n");
+			// 	return;
+			// }
+			_mm_store_si128((vuint8 *)&tab0[i][j], zer);
+		}
+	}
+
+	/***** TESTS UNITAIRES DILATATION *****/
+
+	// Initialisation en 1
+	for (int i = -1; i <= 1; i++) {
+		for (int j = -1; j <= 1; j++) {
+			_mm_store_si128((vuint8 *)&tab0[i][j], one);
+		}
+	}
+
+	printf("\n");
+	display_vui8matrix(tab0, -1, 1, -1, 1, " [%03d]", "Test unitaire SIMD DILATATION");
+
+	for (int i = -1; i <= 1; i++) {
+		for (int j = -1; j <= 1; j++) {
+			_mm_store_si128((vuint8 *)&tab0[i][j], zer);
+			dilatation_SIMD(tab0, tab1, 1, 1);
+			// display_vui8matrix(tab0, -1, 1, -1, 1, " [%03d] ", "\nModifie");
+			// display_vui8matrix(tab1, -1, 1, -1, 1, " [%03d] ", "Resultat");
+			aux = _mm_load_si128((vuint8 *)&tab1[0][0]);
+			display_vuint8(aux, "[%03d] ", "");
+			printf("\n");
+			// if( cmpeq_vuint8(aux, one) )
+			// 	printf("OK\n");
+			// else
+			// {
+			// 	printf("KO\n");
+			// 	return;
+			// }
+			_mm_store_si128((vuint8 *)&tab0[i][j], one);
+		}
+	}
+
+	free_vui8matrix(tab0, -1, 1, -1, 1);
+  	free_vui8matrix(tab1, -1, 1, -1, 1);
 }

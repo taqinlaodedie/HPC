@@ -41,7 +41,7 @@ void test_mouvement()
 		I1[3][i] = 16;
 	}
 
-	printf("Test unitaire pour moouvement\n");
+	printf("Test unitaire pour mouvement\n");
 	SigmaDelta_step0(M0, I0, V0, 4, 4);
 	SigmaDelta_1step(M1, M0, I1, O1, V1, V0, E1, 4, 4);
 	display_ui8matrix(I0, 0, 4, 0, 4, " [%03d] ", "I0");
