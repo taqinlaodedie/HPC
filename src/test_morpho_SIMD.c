@@ -4,8 +4,11 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 #include "nrdef.h"
 #include "nrutil.h"
+#include "vnrdef.h"
+#include "vnrutil.h"
 #include "morpho_SIMD.h"
 #include "test_morpho_SIMD.h"
 #include "mymacro.h"
@@ -16,8 +19,6 @@ void test_morpho_SIMD()
 {
 	struct timeval t1, t2;
 	double timeused;
-
-	test_unitaire_morpho_SIMD();
 
 	char *fname0 = "test_img/mouvement/output_SIMD.pgm";
 	vuint8 **I0 = vui8matrix(-2, IMG_HEIGHT+2, -2, IMG_LENGTH/16+2);
@@ -38,7 +39,7 @@ void test_morpho_SIMD()
 		dilatation_SIMD(I1, I2, IMG_HEIGHT, IMG_LENGTH/16);	\
 		dilatation_SIMD(I2, I3, IMG_HEIGHT, IMG_LENGTH/16);	\
 		erosion_SIMD(I3, I4, IMG_HEIGHT, IMG_LENGTH/16), "chaine morpho SIMD");
-	
+
 	CHRONO(morpho_SIMD_pipeline(I0, I1, I2, I3, I4, IMG_HEIGHT, IMG_LENGTH/16), "pipeline SIMD");
 	SavePGM_vui8matrix(I1, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/pipeline_e1_SIMD.pgm");
 	SavePGM_vui8matrix(I2, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/pipeline_d1_SIMD.pgm");
@@ -92,6 +93,65 @@ void test_morpho_SIMD()
 	free_vui8matrix(tmp, -2, IMG_HEIGHT+2, -2, IMG_LENGTH/16+2);
 }
 
+void test_multi_morpho_SIMD()
+{
+	clock_t start_t, end_t;
+	double total_t;
+
+	char *fname0  = (char*)malloc(sizeof(char*) * 16);
+	char *outfile = (char*)malloc(sizeof(char*) * 16);
+	int aux;
+	strcpy(fname0, "output/output_e001.pgm");
+	strcpy(outfile,"output/xmorph_e001.pgm");
+				//  012345678901234567890123
+
+	INIT_MORPHO_VMATRICES(I0, E0, D0, D1, E1);
+
+	start_t = clock();
+	for(int i = 2; i <= 200; i++)
+	{
+		MLoadPGM_vui8matrix(fname0, 0, HAUT, 0, LARG, I0);
+		erosion_SIMD(I0, E0, HAUTMORPH, LARGMORPH/16);
+		dilatation_SIMD(E0, D0, HAUTMORPH, LARGMORPH/16);
+		dilatation_SIMD(D0, D1, HAUTMORPH, LARGMORPH/16);
+		erosion_SIMD(D1, E1, HAUTMORPH, LARGMORPH/16);
+		SavePGM_vui8matrix(E1, 0, HAUT, 0, LARG, outfile);
+
+		aux = (fname0[15]-'0')*100 + (fname0[16]-'0')*10 + (fname0[17]-'0') + 1;
+		fname0[15] = outfile[15] = aux / 100 + '0';
+		fname0[16] = outfile[16] = (aux / 10) % 10 + '0';
+		fname0[17] = outfile[17] = aux % 10 + '0';
+	}
+
+	end_t = clock();
+	total_t = (double)(end_t - start_t) / CLOCKS_PER_SEC;
+	printf("Temps pour 200 morphos en SIMD: %f\n", total_t);
+
+	strcpy(fname0, "output/output_e001.pgm");
+	strcpy(outfile,"output/xmorph_e001.pgm");
+
+	start_t = clock();
+	for(int i = 2; i <= 200; i++)
+	{
+		MLoadPGM_vui8matrix(fname0, 0, HAUT, 0, LARG, I0);
+		morpho_SIMD_pipeline(I0, E0, D0, D1, E1, HAUTMORPH, LARGMORPH/16);
+		SavePGM_vui8matrix(E1, 0, HAUT, 0, LARG, outfile);
+
+		aux = (fname0[15]-'0')*100 + (fname0[16]-'0')*10 + (fname0[17]-'0') + 1;
+		fname0[15] = outfile[15] = aux / 100 + '0';
+		fname0[16] = outfile[16] = (aux / 10) % 10 + '0';
+		fname0[17] = outfile[17] = aux % 10 + '0';
+	}
+
+	end_t = clock();
+	total_t = (double)(end_t - start_t) / CLOCKS_PER_SEC;
+	printf("Temps pour 200 morphos en SIMD en pipeline: %f\n", total_t);
+
+	free(fname0);
+	free(outfile);
+	FREE_MORPHO_VMATRICES(I0, E0, D0, D1, E1);
+}
+
 void test_unitaire_morpho_SIMD()
 {
 	vuint8 **tab0 = vui8matrix(-1, 1, -1, 1);
@@ -107,7 +167,7 @@ void test_unitaire_morpho_SIMD()
 	zero_vui8matrix(tab1, -1, 1, -1, 1);
 
 	printf("\n");
-	display_vui8matrix(tab0, -1, 1, -1, 1, " [%d]", "Test unitaire SIMD EROSION");
+	display_vui8matrix(tab0, -1, 1, -1, 1, " [%d]", "Test unitaire EROSION SIMD");
 
 	for (int i = -1; i <= 1; i++) {
 		for (int j = -1; j <= 1; j++) {
@@ -139,7 +199,7 @@ void test_unitaire_morpho_SIMD()
 	}
 
 	printf("\n");
-	display_vui8matrix(tab0, -1, 1, -1, 1, " [%03d]", "Test unitaire SIMD DILATATION");
+	display_vui8matrix(tab0, -1, 1, -1, 1, " [%03d]", "Test unitaire DILATATION SIMD");
 
 	for (int i = -1; i <= 1; i++) {
 		for (int j = -1; j <= 1; j++) {
