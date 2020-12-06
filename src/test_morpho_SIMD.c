@@ -39,52 +39,52 @@ void test_morpho_SIMD()
 	CHRONO(erosion_SIMD(I0, I1, IMG_HEIGHT, IMG_LENGTH/16);	\
 		dilatation_SIMD(I1, I2, IMG_HEIGHT, IMG_LENGTH/16);	\
 		dilatation_SIMD(I2, I3, IMG_HEIGHT, IMG_LENGTH/16);	\
-		erosion_SIMD(I3, I4, IMG_HEIGHT, IMG_LENGTH/16), "chaine morpho SIMD");
+		erosion_SIMD(I3, I4, IMG_HEIGHT, IMG_LENGTH/16), "chaine de morpho sur 5*5 SIMD\t\t");
 
-	CHRONO(morpho_SIMD_pipeline(I0, I1, I2, I3, I4, IMG_HEIGHT, IMG_LENGTH/16), "pipeline SIMD");
+	CHRONO(morpho_SIMD_pipeline(I0, I1, I2, I3, I4, IMG_HEIGHT, IMG_LENGTH/16), "pipeline SIMD\t\t\t\t");
 	SavePGM_vui8matrix(I1, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/pipeline_e1_SIMD.pgm");
 	SavePGM_vui8matrix(I2, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/pipeline_d1_SIMD.pgm");
 	SavePGM_vui8matrix(I3, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/pipeline_d2_SIMD.pgm");
 	SavePGM_vui8matrix(I4, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/pipeline_e2_SIMD.pgm");
 
-	CHRONO(erosion_SIMD(I0, I1, IMG_HEIGHT, IMG_LENGTH/16), "erosion SIMD");
+	CHRONO(erosion_SIMD(I0, I1, IMG_HEIGHT, IMG_LENGTH/16), "erosion SIMD\t\t\t\t\t");
 	SavePGM_vui8matrix(I1, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/erosion1_SIMD.pgm");
 
-	CHRONO(erosion_SIMD_factorisee(I0, I1, IMG_HEIGHT, IMG_LENGTH/16), "erosion factorisee en SIMD");
+	CHRONO(erosion_SIMD_factorisee(I0, I1, IMG_HEIGHT, IMG_LENGTH/16), "erosion factorisee en SIMD\t\t\t");
 	SavePGM_vui8matrix(I1, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/erosion1_SIMD_factorisee.pgm");
 
-	CHRONO(dilatation_SIMD(I1, I2, IMG_HEIGHT, IMG_LENGTH/16), "dilatation en SIMD");
+	CHRONO(dilatation_SIMD(I1, I2, IMG_HEIGHT, IMG_LENGTH/16), "dilatation en SIMD\t\t\t\t");
 	SavePGM_vui8matrix(I2, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/dilatation1_SIMD.pgm");
 
-	CHRONO(dilatation_SIMD_factorisee(I1, I2, IMG_HEIGHT, IMG_LENGTH/16), "dilatation factorisee en SIMD");
+	CHRONO(dilatation_SIMD_factorisee(I1, I2, IMG_HEIGHT, IMG_LENGTH/16), "dilatation factorisee en SIMD\t\t");
 	SavePGM_vui8matrix(I2, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/dilatation1_SIMD_factorisee.pgm");
 
-	CHRONO(dilatation5_SIMD(I1, I3, IMG_HEIGHT, IMG_LENGTH/16), "dilatation en 5*5");
+	CHRONO(dilatation5_SIMD(I1, I3, IMG_HEIGHT, IMG_LENGTH/16), "dilatation en 5*5\t\t\t\t");
 	SavePGM_vui8matrix(I3, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/dilatation5_SIMD.pgm");
 
-	CHRONO(dilatation5_SIMD_factorisee(I1, I3, tmp, IMG_HEIGHT, IMG_LENGTH/16), "dilatation factorisee en 5*5");
+	CHRONO(dilatation5_SIMD_factorisee(I1, I3, tmp, IMG_HEIGHT, IMG_LENGTH/16), "dilatation factorisee en 5*5\t\t\t");
 	SavePGM_vui8matrix(I3, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/dilatation5_SIMD_factorisee.pgm");
 
 	CHRONO(dilatation_SIMD(I1, I2, IMG_HEIGHT, IMG_LENGTH/16);	\
-		dilatation_SIMD(I2, I3, IMG_HEIGHT, IMG_LENGTH/16), "2 dilatations en SIMD");
+		dilatation_SIMD(I2, I3, IMG_HEIGHT, IMG_LENGTH/16), "2 dilatations en SIMD\t\t\t");
 	SavePGM_vui8matrix(I3, 0,IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/2dilatation_SIMD.pgm");
 
 	CHRONO(for (int i = 0; i < 200; i++) {	\
 		dilatation_SIMD(I1, I3, IMG_HEIGHT, IMG_LENGTH/16);
-		}, "200 dilatation_SIMD");
+	}, "200 dilatation_SIMD\t\t\t\t");
 
 	CHRONO(for (int i = 0; i < 200; i++) {	\
 		dilatation_SIMD_factorisee(I1, I3, IMG_HEIGHT, IMG_LENGTH/16);
-		}, "200 dilatation_SIMD_factorisee");
+	}, "200 dilatation_SIMD_factorisee\t\t");
 
 	CHRONO(for (int i = 0; i < 200; i++) {	\
 		dilatation5_SIMD(I1, I3, IMG_HEIGHT, IMG_LENGTH/16);
-		}, "200 dilatation5_SIMD");
+	}, "200 dilatation5_SIMD\t\t\t\t");
 
 	CHRONO(for (int i = 0; i < 200; i++) {	\
 		dilatation_SIMD(I1, I2, IMG_HEIGHT, IMG_LENGTH/16);	\
 		dilatation_SIMD(I2, I3, IMG_HEIGHT, IMG_LENGTH/16);
-		}, "400 dilatations en SIMD");
+	}, "400 dilatations en SIMD\t\t\t");
 
 	free_vui8matrix(I0, -2, IMG_HEIGHT+2, -2, IMG_LENGTH/16+2);
 	free_vui8matrix(I1, -2, IMG_HEIGHT+2, -2, IMG_LENGTH/16+2);
@@ -99,12 +99,12 @@ void test_multi_morpho_SIMD()
 	clock_t start_t, end_t;
 	double total_t;
 
-	char *fname0  = (char*)malloc(sizeof(char*) * 16);
-	char *outfile = (char*)malloc(sizeof(char*) * 16);
+	char *fname0  = (char*)malloc(sizeof(char*) * 29);
+	char *outfile = (char*)malloc(sizeof(char*) * 29);
 	int aux;
-	strcpy(fname0, "output/output_e001.pgm");
-	strcpy(outfile,"output/xmorph_e001.pgm");
-				//  012345678901234567890123
+	strcpy(fname0, "output/3_sigdel_SIMD_e001.pgm");
+	strcpy(outfile,"output/4_xmorph_SIMD_e001.pgm");
+				//  012345678901234567890123456789
 
 	INIT_MORPHO_VMATRICES(I0, E0, D0, D1, E1);
 
@@ -118,18 +118,19 @@ void test_multi_morpho_SIMD()
 		erosion_SIMD(D1, E1, HAUT+1, (LARG+1)/16);
 		SavePGM_vui8matrix(E1, 0, HAUT, 0, LARG, outfile);
 
-		aux = (fname0[15]-'0')*100 + (fname0[16]-'0')*10 + (fname0[17]-'0') + 1;
-		fname0[15] = outfile[15] = aux / 100 + '0';
-		fname0[16] = outfile[16] = (aux / 10) % 10 + '0';
-		fname0[17] = outfile[17] = aux % 10 + '0';
+		aux = (fname0[22]-'0')*100 + (fname0[23]-'0')*10 + (fname0[24]-'0') + 1;
+		fname0[22] = outfile[22] = aux / 100 + '0';
+		fname0[23] = outfile[23] = (aux / 10) % 10 + '0';
+		fname0[24] = outfile[24] = aux % 10 + '0';
 	}
 
 	end_t = clock();
 	total_t = (double)(end_t - start_t) / CLOCKS_PER_SEC;
-	printf("Temps pour 200 morphos en SIMD: %f\n", total_t);
+	printf("Temps pour 200 morphos en SIMD\t\t\t\t: %f s\n", total_t);
 
-	strcpy(fname0, "output/output_e001.pgm");
-	strcpy(outfile,"output/xmorph_e001.pgm");
+	strcpy(fname0, "output/3_sigdel_SIMD_e001.pgm");
+	strcpy(outfile,"output/5_moPipe_SIMD_e001.pgm");
+				//  012345678901234567890123456789
 
 	start_t = clock();
 	for(int i = 2; i <= 200; i++)
@@ -138,15 +139,15 @@ void test_multi_morpho_SIMD()
 		morpho_SIMD_pipeline(I0, E0, D0, D1, E1, HAUT+1, (LARG+1)/16);
 		SavePGM_vui8matrix(E1, 0, HAUT, 0, LARG, outfile);
 
-		aux = (fname0[15]-'0')*100 + (fname0[16]-'0')*10 + (fname0[17]-'0') + 1;
-		fname0[15] = outfile[15] = aux / 100 + '0';
-		fname0[16] = outfile[16] = (aux / 10) % 10 + '0';
-		fname0[17] = outfile[17] = aux % 10 + '0';
+		aux = (fname0[22]-'0')*100 + (fname0[23]-'0')*10 + (fname0[24]-'0') + 1;
+		fname0[22] = outfile[22] = aux / 100 + '0';
+		fname0[23] = outfile[23] = (aux / 10) % 10 + '0';
+		fname0[24] = outfile[24] = aux % 10 + '0';
 	}
 
 	end_t = clock();
 	total_t = (double)(end_t - start_t) / CLOCKS_PER_SEC;
-	printf("Temps pour 200 morphos en SIMD en pipeline: %f\n", total_t);
+	printf("Temps pour 200 morphos en SIMD en pipeline\t\t: %f s\n", total_t);
 
 	free(fname0);
 	free(outfile);
@@ -223,12 +224,12 @@ void test_morpho_SIMD_para(int mode)
 	clock_t start_t, end_t;
 	double total_t;
 
-	char *fname0  = (char*)malloc(sizeof(char*) * 16);
-	char *outfile = (char*)malloc(sizeof(char*) * 16);
+	char *fname0  = (char*)malloc(sizeof(char*) * 29);
+	char *outfile = (char*)malloc(sizeof(char*) * 29);
 	int aux;
-	strcpy(fname0, "output/output_e001.pgm");
-	strcpy(outfile,"output/xmorph_e001.pgm");
-				//  012345678901234567890123
+	strcpy(fname0, "output/3_sigdel_SIMD_e001.pgm");
+	strcpy(outfile,"output/6_moPara_SIMD_e001.pgm");
+				//  012345678901234567890123456789
 
 	INIT_MORPHO_VMATRICES(I0, E0, D0, D1, E1);
 
@@ -245,18 +246,18 @@ void test_morpho_SIMD_para(int mode)
 			erosion_SIMD(D1, E1, HAUT+1, (LARG+1)/16);
 			SavePGM_vui8matrix(E1, 0, HAUT, 0, LARG, outfile);
 
-			aux = (fname0[15]-'0')*100 + (fname0[16]-'0')*10 + (fname0[17]-'0') + 1;
-			fname0[15] = outfile[15] = aux / 100 + '0';
-			fname0[16] = outfile[16] = (aux / 10) % 10 + '0';
-			fname0[17] = outfile[17] = aux % 10 + '0';
-			// printf("%d\n", i);
+			aux = (fname0[22]-'0')*100 + (fname0[23]-'0')*10 + (fname0[24]-'0') + 1;
+			fname0[22] = outfile[22] = aux / 100 + '0';
+			fname0[23] = outfile[23] = (aux / 10) % 10 + '0';
+			fname0[24] = outfile[24] = aux % 10 + '0';
 		}
 
 		end_t = clock();
 		total_t = (double)(end_t - start_t) / CLOCKS_PER_SEC;
-		printf("Temps pour 200 morphos en SIMD parallel: %f\n", total_t);
+		printf("Temps pour 200 morphos en SIMD parallel\t\t\t: %f s\n", total_t);
 	}
 	else {
+		outfile[7] = '7';
 		start_t = clock();
 		#pragma omp parallel
 		#pragma  omp  for  schedule(static) nowait
@@ -266,16 +267,15 @@ void test_morpho_SIMD_para(int mode)
 			morpho_SIMD_pipeline(I0, E0, D0, D1, E1, HAUT+1, (LARG+1)/16);
 			SavePGM_vui8matrix(E1, 0, HAUT, 0, LARG, outfile);
 
-			aux = (fname0[15]-'0')*100 + (fname0[16]-'0')*10 + (fname0[17]-'0') + 1;
-			fname0[15] = outfile[15] = aux / 100 + '0';
-			fname0[16] = outfile[16] = (aux / 10) % 10 + '0';
-			fname0[17] = outfile[17] = aux % 10 + '0';
-			// printf("%d\n", i);
+			aux = (fname0[22]-'0')*100 + (fname0[23]-'0')*10 + (fname0[24]-'0') + 1;
+			fname0[22] = outfile[22] = aux / 100 + '0';
+			fname0[23] = outfile[23] = (aux / 10) % 10 + '0';
+			fname0[24] = outfile[24] = aux % 10 + '0';
 		}
 
 		end_t = clock();
 		total_t = (double)(end_t - start_t) / CLOCKS_PER_SEC;
-		printf("Temps pour 200 morphos en SIMD en pipeline parallel: %f\n", total_t);
+		printf("Temps pour 200 morphos en SIMD en pipeline parallel\t: %f s\n", total_t);
 	}
 
 	free(fname0);

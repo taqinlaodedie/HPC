@@ -43,7 +43,7 @@ void test_mouvement()
 		I1[3][i] = 16;
 	}
 
-	printf("Test unitaire pour mouvement\n");
+	printf("\nTEST UNITAIRE MOUVEMENT 2\n\n");
 	SigmaDelta_step0(M0, I0, V0, 4, 4);
 	SigmaDelta_1step(M1, M0, I1, O1, V1, V0, E1, 4, 4);
 	display_ui8matrix(I0, 0, 4, 0, 4, " [%03d] ", "I0");
@@ -79,7 +79,7 @@ void test_mouvement()
 	MLoadPGM_ui8matrix(fname1, 0, IMG_HEIGHT, 0, IMG_LENGTH, I1);
 
 	SigmaDelta_step0(M0, I0, V0, IMG_HEIGHT, IMG_LENGTH);
-	CHRONO(SigmaDelta_1step(M1, M0, I1, O1, V1, V0, E1, IMG_HEIGHT, IMG_LENGTH), "SD");
+	CHRONO(SigmaDelta_1step(M1, M0, I1, O1, V1, V0, E1, IMG_HEIGHT, IMG_LENGTH), "SD 5*5");
 
 	SavePGM_ui8matrix(E1, 0, IMG_HEIGHT, 0, IMG_LENGTH, outfile);
 
@@ -99,14 +99,14 @@ void test_multi_mouvement()
 	double total_t;
 	start_t = clock();
 
-	char *fname0 = (char*)malloc(sizeof(char*) * 16);
-	char *fname1 = (char*)malloc(sizeof(char*) * 16);
-	char *outfile = (char*)malloc(sizeof(char*) * 22);
+	char *fname0  = (char*)malloc(sizeof(char*) * 16);
+	char *fname1  = (char*)malloc(sizeof(char*) * 16);
+	char *outfile = (char*)malloc(sizeof(char*) * 24);
 	int aux;
 	strcpy(fname0, "img/car_3000.pgm");
 	strcpy(fname1, "img/car_3001.pgm");
-	strcpy(outfile,"output/output_e001.pgm");
-				//  012345678901234567890123
+	strcpy(outfile,"output/1_sigdel_e001.pgm");
+				//  012345678901234567890123456789
 
 	INIT_MATRICES(I0, M0, V0, I1, M1, V1, O1, E1);
 
@@ -121,9 +121,9 @@ void test_multi_mouvement()
 		COPIER_MATRICES(I1, I0, M1, M0, V1, V0);
 		strcpy(fname0, fname1);
 		aux = (fname0[9]-'0')*100 + (fname0[10]-'0')*10 + (fname0[11]-'0') + 1;
-		fname1[9] = outfile[15] = aux / 100 + '0';
-		fname1[10] = outfile[16] = (aux / 10) % 10 + '0';
-		fname1[11] = outfile[17] = aux % 10 + '0';
+		fname1[ 9] = outfile[17] = aux / 100 + '0';
+		fname1[10] = outfile[18] = (aux / 10) % 10 + '0';
+		fname1[11] = outfile[19] = aux % 10 + '0';
 	}
 
 	free(fname0);
@@ -133,7 +133,7 @@ void test_multi_mouvement()
 
 	end_t = clock();
 	total_t = (double)(end_t - start_t) / CLOCKS_PER_SEC;
-	printf("Temps pour 200 SD: %f\n", total_t);
+	printf("Temps pour 200 SD\t\t\t\t\t: %f s\n", total_t);
 }
 
 void test_unitaire_mouvement()
@@ -145,7 +145,7 @@ void test_unitaire_mouvement()
 	strcpy(fname1, "test_img/tests_mouv_2.pgm");
 	strcpy(outfile,"test_img/mouvement/output_mouv.pgm");
 				// 012345678901234567890123456789012345
-	printf("\nTESTS UNITAIRES MOUVEMENT\n");
+	printf("\nTEST UNITAIRE MOUVEMENT 1\n");
 
 	uint8 **I0 = ui8matrix(-1, 10, -1, 10);
 	uint8 **I1 = ui8matrix(-1, 10, -1, 10);
