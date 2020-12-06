@@ -168,6 +168,7 @@ void test_unitaire_morpho_SIMD()
 
 	printf("\n");
 	display_vui8matrix(tab0, -1, 1, -1, 1, " [%d]", "Test unitaire EROSION SIMD");
+	printf(" i  j\n");
 
 	for (int i = -1; i <= 1; i++) {
 		for (int j = -1; j <= 1; j++) {
@@ -176,7 +177,8 @@ void test_unitaire_morpho_SIMD()
 			// display_vui8matrix(tab0, -1, 1, -1, 1, " [%03d] ", "\nModifie");
 			// display_vui8matrix(tab1, -1, 1, -1, 1, " [%03d] ", "Resultat");
 			aux = _mm_load_si128((vuint8 *)&tab1[0][0]);
-			display_vuint8(aux, "[%03d] ", "");
+			printf("%2d %2d   ", i, j);
+			display_vuint8(aux, "[%d] ", "");
 			printf("\n");
 			// if( cmpeq_vuint8(aux, zer) )
 			// 	printf("OK\n");
@@ -200,6 +202,7 @@ void test_unitaire_morpho_SIMD()
 
 	printf("\n");
 	display_vui8matrix(tab0, -1, 1, -1, 1, " [%03d]", "Test unitaire DILATATION SIMD");
+	printf(" i  j\n");
 
 	for (int i = -1; i <= 1; i++) {
 		for (int j = -1; j <= 1; j++) {
@@ -208,6 +211,7 @@ void test_unitaire_morpho_SIMD()
 			// display_vui8matrix(tab0, -1, 1, -1, 1, " [%03d] ", "\nModifie");
 			// display_vui8matrix(tab1, -1, 1, -1, 1, " [%03d] ", "Resultat");
 			aux = _mm_load_si128((vuint8 *)&tab1[0][0]);
+			printf("%2d %2d   ", i, j);
 			display_vuint8(aux, "[%03d] ", "");
 			printf("\n");
 			// if( cmpeq_vuint8(aux, one) )
@@ -220,6 +224,7 @@ void test_unitaire_morpho_SIMD()
 			_mm_store_si128((vuint8 *)&tab0[i][j], one);
 		}
 	}
+	printf("\n");
 
 	free_vui8matrix(tab0, -1, 1, -1, 1);
   	free_vui8matrix(tab1, -1, 1, -1, 1);
