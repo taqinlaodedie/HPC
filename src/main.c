@@ -18,6 +18,8 @@ int main() {
 	test_multi_mouvement_SIMD();
 	test_multi_morpho();
 	test_multi_morpho_SIMD();
+	test_morpho_SIMD_para(0);
+	test_morpho_SIMD_para(1);
 
 	return 0;
 }

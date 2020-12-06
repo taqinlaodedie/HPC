@@ -14,6 +14,7 @@
 #include "mymacro.h"
 #include "myutils.h"
 #include "sys/time.h"
+#include  <omp.h>
 
 void test_morpho_SIMD()
 {
@@ -228,4 +229,70 @@ void test_unitaire_morpho_SIMD()
 
 	free_vui8matrix(tab0, -1, 1, -1, 1);
   	free_vui8matrix(tab1, -1, 1, -1, 1);
+}
+
+// mode 0: normal, mode 1: pipeline
+void test_morpho_SIMD_para(int mode)
+{
+	clock_t start_t, end_t;
+	double total_t;
+
+	char *fname0  = (char*)malloc(sizeof(char*) * 16);
+	char *outfile = (char*)malloc(sizeof(char*) * 16);
+	int aux;
+	strcpy(fname0, "output/output_e001.pgm");
+	strcpy(outfile,"output/xmorph_e001.pgm");
+				//  012345678901234567890123
+
+	INIT_MORPHO_VMATRICES(I0, E0, D0, D1, E1);
+
+	if (mode == 0) {
+		start_t = clock();
+		#pragma omp parallel
+		#pragma  omp  for  schedule(static) nowait
+		for(int i = 2; i <= 200; i++)
+		{
+			MLoadPGM_vui8matrix(fname0, 0, HAUT, 0, LARG, I0);
+			erosion_SIMD(I0, E0, HAUTMORPH, LARGMORPH/16);
+			dilatation_SIMD(E0, D0, HAUTMORPH, LARGMORPH/16);
+			dilatation_SIMD(D0, D1, HAUTMORPH, LARGMORPH/16);
+			erosion_SIMD(D1, E1, HAUTMORPH, LARGMORPH/16);
+			SavePGM_vui8matrix(E1, 0, HAUT, 0, LARG, outfile);
+
+			aux = (fname0[15]-'0')*100 + (fname0[16]-'0')*10 + (fname0[17]-'0') + 1;
+			fname0[15] = outfile[15] = aux / 100 + '0';
+			fname0[16] = outfile[16] = (aux / 10) % 10 + '0';
+			fname0[17] = outfile[17] = aux % 10 + '0';
+			// printf("%d\n", i);
+		}
+
+		end_t = clock();
+		total_t = (double)(end_t - start_t) / CLOCKS_PER_SEC;
+		printf("Temps pour 200 morphos en SIMD parallel: %f\n", total_t);
+	}
+	else {
+		start_t = clock();
+		#pragma omp parallel
+		#pragma  omp  for  schedule(static) nowait
+		for(int i = 2; i <= 200; i++)
+		{
+			MLoadPGM_vui8matrix(fname0, 0, HAUT, 0, LARG, I0);
+			morpho_SIMD_pipeline(I0, E0, D0, D1, E1, HAUTMORPH, LARGMORPH/16);
+			SavePGM_vui8matrix(E1, 0, HAUT, 0, LARG, outfile);
+
+			aux = (fname0[15]-'0')*100 + (fname0[16]-'0')*10 + (fname0[17]-'0') + 1;
+			fname0[15] = outfile[15] = aux / 100 + '0';
+			fname0[16] = outfile[16] = (aux / 10) % 10 + '0';
+			fname0[17] = outfile[17] = aux % 10 + '0';
+			// printf("%d\n", i);
+		}
+
+		end_t = clock();
+		total_t = (double)(end_t - start_t) / CLOCKS_PER_SEC;
+		printf("Temps pour 200 morphos en SIMD en pipeline parallel: %f\n", total_t);
+	}
+
+	free(fname0);
+	free(outfile);
+	FREE_MORPHO_VMATRICES(I0, E0, D0, D1, E1);
 }

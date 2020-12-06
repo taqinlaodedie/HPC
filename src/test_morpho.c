@@ -93,7 +93,7 @@ void test_multi_morpho()
 
 	end_t = clock();
 	total_t = (double)(end_t - start_t) / CLOCKS_PER_SEC;
-	printf("Temps pour 200 morphos en: %f\n", total_t);
+	printf("Temps pour 200 morphos: %f\n", total_t);
 }
 
 void test_unitaire_morpho()

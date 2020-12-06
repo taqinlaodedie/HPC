@@ -16,6 +16,9 @@
 #define HAUT		239
 #define LARSIMD		19
 
+#define HAUTMORPH	240
+#define LARGMORPH	320
+
 // Pour test
 #define IMG_LENGTH	576
 #define IMG_HEIGHT	576
