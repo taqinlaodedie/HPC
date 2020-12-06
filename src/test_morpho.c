@@ -29,8 +29,8 @@ void traitement_bord(uint8 **img, int larg, int haut)
 
 void test_morpho()
 {
-	// struct timeval t1, t2;
-	// double timeused;
+	struct timeval t1, t2;
+	double timeused;
 
 	/* Test unitaire avec des images de 5*5*/
   	uint8 **I0 = ui8matrix(-1, 5, -1, 5);
@@ -44,10 +44,10 @@ void test_morpho()
 	MLoadPGM_ui8matrix(fname0, 0, IMG_HEIGHT-1, 0, IMG_LENGTH-1, I0);
 	traitement_bord(I0, IMG_HEIGHT, IMG_LENGTH);
 
-	// CHRONO(erosion(I0, I1, IMG_HEIGHT, IMG_LENGTH);	\
-	// 	dilatation(I1, I0, IMG_HEIGHT, IMG_LENGTH);	\
-	// 	dilatation(I0, I1, IMG_HEIGHT, IMG_LENGTH);	\
-	// 	erosion(I1, I0, IMG_HEIGHT, IMG_LENGTH), "chaine de morpho");
+	CHRONO(erosion(I0, I1, IMG_HEIGHT, IMG_LENGTH);	\
+		dilatation(I1, I0, IMG_HEIGHT, IMG_LENGTH);	\
+		dilatation(I0, I1, IMG_HEIGHT, IMG_LENGTH);	\
+		erosion(I1, I0, IMG_HEIGHT, IMG_LENGTH), "chaine de morpho");
 	SavePGM_ui8matrix(I0, 0, IMG_HEIGHT-1, 0, IMG_LENGTH-1, "test_img/morpho/chaine_de_morpho.pgm");
 
 
@@ -103,6 +103,8 @@ void test_unitaire_morpho()
   	uint8 **tab2 = ui8matrix(-1, 5, -1, 5);
 	uint8 **tab3 = ui8matrix(-1, 5, -1, 5);
 
+	printf("\n\nTESTS UNITAIRES MORPHOLOGIE\n");
+
 	/***************** TESTS UNITAIRES EROSION *****************/
 
 	/***** TEST 1															*******
@@ -131,10 +133,7 @@ void test_unitaire_morpho()
 			if(tab1[0][0] == 0)
 				printf("OK\n");
 			else
-			{
 				printf("KO\n");
-				return;
-			}
 			tab0[i][j] = 0;
 		}
 	}
@@ -164,10 +163,7 @@ void test_unitaire_morpho()
 			if(tab1[0][0] == 0)
 				printf("OK\n");
 			else
-			{
 				printf("KO\n");
-				return;
-			}
 			tab0[i][j] = 255;
 		}
 	}
@@ -224,10 +220,7 @@ void test_unitaire_morpho()
 			if(tab1[0][0] == 255)
 				printf("OK\n");
 			else
-			{
 				printf("KO\n");
-				return;
-			}
 			tab0[i][j] = 255;
 		}
 	}
@@ -257,10 +250,7 @@ void test_unitaire_morpho()
 			if(tab1[0][0] == 255)
 				printf("OK\n");
 			else
-			{
 				printf("KO\n");
-				return;
-			}
 			tab0[i][j] = 0;
 		}
 	}

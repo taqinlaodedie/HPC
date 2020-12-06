@@ -112,10 +112,10 @@ void test_multi_morpho_SIMD()
 	for(int i = 2; i <= 200; i++)
 	{
 		MLoadPGM_vui8matrix(fname0, 0, HAUT, 0, LARG, I0);
-		erosion_SIMD(I0, E0, HAUTMORPH, LARGMORPH/16);
-		dilatation_SIMD(E0, D0, HAUTMORPH, LARGMORPH/16);
-		dilatation_SIMD(D0, D1, HAUTMORPH, LARGMORPH/16);
-		erosion_SIMD(D1, E1, HAUTMORPH, LARGMORPH/16);
+		erosion_SIMD(I0, E0, HAUT+1, (LARG+1)/16);
+		dilatation_SIMD(E0, D0, HAUT+1, (LARG+1)/16);
+		dilatation_SIMD(D0, D1, HAUT+1, (LARG+1)/16);
+		erosion_SIMD(D1, E1, HAUT+1, (LARG+1)/16);
 		SavePGM_vui8matrix(E1, 0, HAUT, 0, LARG, outfile);
 
 		aux = (fname0[15]-'0')*100 + (fname0[16]-'0')*10 + (fname0[17]-'0') + 1;
@@ -135,7 +135,7 @@ void test_multi_morpho_SIMD()
 	for(int i = 2; i <= 200; i++)
 	{
 		MLoadPGM_vui8matrix(fname0, 0, HAUT, 0, LARG, I0);
-		morpho_SIMD_pipeline(I0, E0, D0, D1, E1, HAUTMORPH, LARGMORPH/16);
+		morpho_SIMD_pipeline(I0, E0, D0, D1, E1, HAUT+1, (LARG+1)/16);
 		SavePGM_vui8matrix(E1, 0, HAUT, 0, LARG, outfile);
 
 		aux = (fname0[15]-'0')*100 + (fname0[16]-'0')*10 + (fname0[17]-'0') + 1;
@@ -169,7 +169,7 @@ void test_unitaire_morpho_SIMD()
 
 	printf("\n");
 	display_vui8matrix(tab0, -1, 1, -1, 1, " [%d]", "Test unitaire EROSION SIMD");
-	printf(" i  j\n");
+	// printf(" i  j\n");
 
 	for (int i = -1; i <= 1; i++) {
 		for (int j = -1; j <= 1; j++) {
@@ -178,23 +178,16 @@ void test_unitaire_morpho_SIMD()
 			// display_vui8matrix(tab0, -1, 1, -1, 1, " [%03d] ", "\nModifie");
 			// display_vui8matrix(tab1, -1, 1, -1, 1, " [%03d] ", "Resultat");
 			aux = _mm_load_si128((vuint8 *)&tab1[0][0]);
-			printf("%2d %2d   ", i, j);
+			// printf("%2d %2d   ", i, j);
 			display_vuint8(aux, "[%d] ", "");
 			printf("\n");
-			// if( cmpeq_vuint8(aux, zer) )
-			// 	printf("OK\n");
-			// else
-			// {
-			// 	printf("KO\n");
-			// 	return;
-			// }
 			_mm_store_si128((vuint8 *)&tab0[i][j], zer);
 		}
 	}
 
 	/***** TESTS UNITAIRES DILATATION *****/
 
-	// Initialisation en 1
+	// Initialisation à 255
 	for (int i = -1; i <= 1; i++) {
 		for (int j = -1; j <= 1; j++) {
 			_mm_store_si128((vuint8 *)&tab0[i][j], one);
@@ -215,13 +208,6 @@ void test_unitaire_morpho_SIMD()
 			printf("%2d %2d   ", i, j);
 			display_vuint8(aux, "[%03d] ", "");
 			printf("\n");
-			// if( cmpeq_vuint8(aux, one) )
-			// 	printf("OK\n");
-			// else
-			// {
-			// 	printf("KO\n");
-			// 	return;
-			// }
 			_mm_store_si128((vuint8 *)&tab0[i][j], one);
 		}
 	}
@@ -253,10 +239,10 @@ void test_morpho_SIMD_para(int mode)
 		for(int i = 2; i <= 200; i++)
 		{
 			MLoadPGM_vui8matrix(fname0, 0, HAUT, 0, LARG, I0);
-			erosion_SIMD(I0, E0, HAUTMORPH, LARGMORPH/16);
-			dilatation_SIMD(E0, D0, HAUTMORPH, LARGMORPH/16);
-			dilatation_SIMD(D0, D1, HAUTMORPH, LARGMORPH/16);
-			erosion_SIMD(D1, E1, HAUTMORPH, LARGMORPH/16);
+			erosion_SIMD(I0, E0, HAUT+1, (LARG+1)/16);
+			dilatation_SIMD(E0, D0, HAUT+1, (LARG+1)/16);
+			dilatation_SIMD(D0, D1, HAUT+1, (LARG+1)/16);
+			erosion_SIMD(D1, E1, HAUT+1, (LARG+1)/16);
 			SavePGM_vui8matrix(E1, 0, HAUT, 0, LARG, outfile);
 
 			aux = (fname0[15]-'0')*100 + (fname0[16]-'0')*10 + (fname0[17]-'0') + 1;
@@ -277,7 +263,7 @@ void test_morpho_SIMD_para(int mode)
 		for(int i = 2; i <= 200; i++)
 		{
 			MLoadPGM_vui8matrix(fname0, 0, HAUT, 0, LARG, I0);
-			morpho_SIMD_pipeline(I0, E0, D0, D1, E1, HAUTMORPH, LARGMORPH/16);
+			morpho_SIMD_pipeline(I0, E0, D0, D1, E1, HAUT+1, (LARG+1)/16);
 			SavePGM_vui8matrix(E1, 0, HAUT, 0, LARG, outfile);
 
 			aux = (fname0[15]-'0')*100 + (fname0[16]-'0')*10 + (fname0[17]-'0') + 1;

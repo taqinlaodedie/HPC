@@ -135,3 +135,51 @@ void test_multi_mouvement()
 	total_t = (double)(end_t - start_t) / CLOCKS_PER_SEC;
 	printf("Temps pour 200 SD: %f\n", total_t);
 }
+
+void test_unitaire_mouvement()
+{
+	char *fname0 = (char*)malloc(sizeof(char*) * 25);
+	char *fname1 = (char*)malloc(sizeof(char*) * 25);
+	char *outfile = (char*)malloc(sizeof(char*) * 34);
+	strcpy(fname0, "test_img/tests_mouv_1.pgm");
+	strcpy(fname1, "test_img/tests_mouv_2.pgm");
+	strcpy(outfile,"test_img/mouvement/output_mouv.pgm");
+				// 012345678901234567890123456789012345
+	printf("\nTESTS UNITAIRES MOUVEMENT\n");
+
+	uint8 **I0 = ui8matrix(-1, 10, -1, 10);
+	uint8 **I1 = ui8matrix(-1, 10, -1, 10);
+	uint8 **M0 = ui8matrix(-1, 10, -1, 10);
+	uint8 **V0 = ui8matrix(-1, 10, -1, 10);
+	uint8 **M1 = ui8matrix(-1, 10, -1, 10);
+	uint8 **V1 = ui8matrix(-1, 10, -1, 10);
+	uint8 **O1 = ui8matrix(-1, 10, -1, 10);
+	uint8 **E1 = ui8matrix(-1, 10, -1, 10);
+
+	MLoadPGM_ui8matrix(fname0, 0, 9, 0, 9, I0);
+	MLoadPGM_ui8matrix(fname1, 0, 9, 0, 9, I1);
+	SigmaDelta_step0(M0, I0, V0, 9, 9);
+	SigmaDelta_1step(M1, M0, I1, O1, V1, V0, E1, 9, 9);
+	SavePGM_ui8matrix(E1, 0, 9, 0, 9, outfile);
+
+	display_ui8matrix(I0, 0, 9, 0, 9, " [%03d]", "\nI0");
+	display_ui8matrix(I1, 0, 9, 0, 9, " [%03d]", "\nI1");
+	// display_ui8matrix(M0, 0, 9, 0, 9, " [%03d]", "\nM0");
+	// display_ui8matrix(M1, 0, 9, 0, 9, " [%03d]", "\nM1");
+	// display_ui8matrix(O1, 0, 9, 0, 9, " [%03d]", "\nO1");
+	// display_ui8matrix(V0, 0, 9, 0, 9, " [%03d]", "\nV0");
+	// display_ui8matrix(V1, 0, 9, 0, 9, " [%03d]", "\nV1");
+	display_ui8matrix(E1, 0, 9, 0, 9, " [%3d]", "\nE1");
+
+	free(fname0);
+	free(fname1);
+	free(outfile);
+	free_ui8matrix(I0, -1, 10, -1, 10);
+	free_ui8matrix(I1, -1, 10, -1, 10);
+	free_ui8matrix(M0, -1, 10, -1, 10);
+	free_ui8matrix(M1, -1, 10, -1, 10);
+	free_ui8matrix(O1, -1, 10, -1, 10);
+	free_ui8matrix(V0, -1, 10, -1, 10);
+	free_ui8matrix(V1, -1, 10, -1, 10);
+	free_ui8matrix(E1, -1, 10, -1, 10);
+}

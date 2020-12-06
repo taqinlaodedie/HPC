@@ -12,17 +12,12 @@ void erosion(uint8 **img_src, uint8 **img_dst, int m, int n)
 {
 	int i, j, k, l, flag;
 
-	// matrice [-1..LARGMORPH][-1..HAUTMORPH] = [-1..LARG+1][-1..HAUT+1]
-	// aka     [0..LARGMORPH+1][0..HAUTMORPH+1] = [0..LARG+2][0..HAUT+2]
-	// du coup on va evaluer les matrices de [1..LARG+1][1..HAUT+1]
 	for (i = 0; i < m; i++) {
 		for (j = 0; j < n; j++) {
 			flag = 255;
-			// printf("img_src[%d][%d] = %d\n", i, j, img_src[i][j]);
 			for (k = i - 1; k <= i + 1; k++) {
 				for (l = j - 1; l <= j + 1; l++) {
 					flag &= img_src[k][l];
-					// printf("  [%d][%d] = %d\n", k, l, img_src[k][l]);
 				}
 			}
 			img_dst[i][j] = flag;

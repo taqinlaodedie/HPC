@@ -6,6 +6,7 @@
 
 int main() {
 
+	test_unitaire_mouvement();
 	test_unitaire_morpho();
 	test_unitaire_morpho_SIMD();
 
@@ -14,12 +15,12 @@ int main() {
 	test_morpho();
 	test_morpho_SIMD();
 
-	test_multi_mouvement();
-	test_multi_mouvement_SIMD();
-	test_multi_morpho();
-	test_multi_morpho_SIMD();
-	test_morpho_SIMD_para(0);
-	test_morpho_SIMD_para(1);
+	// test_multi_mouvement();
+	// test_multi_mouvement_SIMD();
+	// test_multi_morpho();
+	// test_multi_morpho_SIMD();
+	// test_morpho_SIMD_para(0);
+	// test_morpho_SIMD_para(1);
 
 	return 0;
 }

@@ -3,5 +3,6 @@
 
 void test_mouvement();
 void test_multi_mouvement();
+void test_unitaire_mouvement();
 
 #endif
